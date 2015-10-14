@@ -43,8 +43,34 @@
         text-decoration: underline;
       }
       pre { display: inline-block; }
+
+      .example {
+        display: inline-block;
+      }
+      .example.wrapper {
+        background-color: #fff;
+      }
+      .example.wrapper pre {
+        background-color: #fcfaee;
+        margin-left: 0;
+        line-height: 1.2;
+        display: table;
+      }
+      .example.wrapper .fail {
+        background-color: #fceefa
+      }
+
+      pre.schema.shexc { background-color: #ECEBF7; border: thick solid #e4e3ec; }
+      pre.schema.json { background-color: #ECEBF7; border: thick solid #DCDBE7; }
+      .example.wrapper pre.output { background-color: #ECF7EB; border: thick solid #e4ece3; }
+      pre.instance { border: thick solid #f8f6ea; }
+      .verticalDivider {
+        float: left;
+        width: .5em;
+        border:thin solid #fff; /* disappears without this */
+      }
     </style>
-    	<script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+    	<script src='../../primer/respec-w3c-common' async class='remove'></script>
 	    <script class='remove'>
 	      var respecConfig = {
 	          specStatus: "unofficial",
@@ -76,8 +102,8 @@
       <p>
         from the <a href="http://www.w3.org/2013/ShEx/FancyShExDemo.html?schemaURL=test/GenX/schema.shex&amp;dataURL=test/Issue-pass-date.ttl">ShEx Demo</a> (look for [Popup] or <a>link</a> in validation messages):
       </p>
-      <div>
-        <pre style="float:left;">#BASE &lt;http://base.example/#&gt;
+      <div id="simple-expressions-example-1" class="example wrapper">
+        <pre class="schema shexc" style="float:left;">#BASE &lt;http://base.example/#&gt;
 PREFIX ex: &lt;http://ex.example/#&gt;
 PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
 PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
@@ -115,6 +141,7 @@ VIRTUAL &lt;Person&gt; {
     foaf:phone IRI+             %GenX:{ tel-number %}
 }
 </pre>
+          <div class="verticalDivider"><!-- acts as a divider --></div>
         <pre style="float:left;">#BASE &lt;http://base.example/#&gt;
 PREFIX ex: &lt;http://ex.example/#&gt;
 PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
@@ -143,7 +170,8 @@ PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
 .
 
 </pre>
-        <pre style="float:left;">&lt;issue xmlns="http://ex.example/xml" id="Issue1" state="unassigned"&gt;
+          <div class="verticalDivider"><!-- acts as a divider --></div>
+        <pre class="output" style="float:left;">&lt;issue xmlns="http://ex.example/xml" id="Issue1" state="unassigned"&gt;
 &lt;reported date="2013-01-23T10:18:00"&gt;
 &lt;given-name&gt;Bob&lt;/given-name&gt;
 &lt;family-name&gt;Smith&lt;/family-name&gt;
