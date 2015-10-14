@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="emacs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>ShExMap</title>
+    <link rel="stylesheet" href="local.css" type="text/css" />
+    <style type="text/css">
+      code { background-color: #dfd; }
+      .constant {
+        /* font-lock-constant-face */
+        color: #008b8b;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #a020f0;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #483d8b;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #8b2252;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #a0522d;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      pre { display: inline-block; }
+    </style>
+    	<script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+	    <script class='remove'>
+	      var respecConfig = {
+	          specStatus: "unofficial",
+	          shortName:  "shexmap",
+            edDraftURI: "http://shexspec.github.io/extensions/Map/",
+	          editors: [
+	                {   name:       "Eric Prud'hommeaux",
+	                    url:        "http://www.w3.org/People/Eric/",
+	                    company:    "W3C/MIT",
+	                    companyURL: "http://www.w3.org/" }
+	          ],
+	          wg:           "HCLS",
+	          wgURI:        "https://www.w3.org/wiki/HCLSIG",
+	          wgPublicList: "public-semweb-lifesci",
+	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
+	      };
+	    </script>
+  </head>
+
+  <body>
+    <div id="abstract">
+      <p>
+        GenJ is a ShEx extension to leverage ShEx's unambiguous, ordered traversal of RDF graphs to produce JSON documents.
+      </p>
+    </div>
+
+    <div>
+      <h2 id="example">Example</h2>
+      <p>
+        from the <a href="http://www.w3.org/2013/ShEx/FancyShExDemo.html?schemaURL=test/GenJ/schema.shex&amp;dataURL=test/Issue-pass-date.ttl">ShEx Demo</a> (look for [Popup] or <a>link</a> in validation messages):
+      </p>
+      <div>
+        <pre style="float:left;">#BASE &lt;http://base.example/#&gt;
+PREFIX ex: &lt;http://ex.example/#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX GenJ: &lt;http://shexspec.github.io/extensions/GenJ/&gt;
+
+                                         %GenJ:{ @id %}
+
+start = &lt;IssueShape&gt;
+
+&lt;IssueShape&gt; {
+    ex:state (ex:unassigned ex:assigned) %GenJ:{ state %},
+    ex:reportedBy @&lt;User&gt;                %GenJ:{ rprtBy @id %},
+    ex:reportedOn xsd:dateTime           %GenJ:{ rprtOn %},
+    (ex:reproducedBy @&lt;User&gt;             %GenJ:{ rpdcBy @id %},
+     ex:reproducedOn xsd:dateTime        %GenJ:{ rpdcOn %}
+    )?,
+    ex:related @&lt;IssueShape&gt;*
+}
+&lt;User&gt; {
+    (foaf:name xsd:string                %GenJ:{ name %}
+     | foaf:givenName xsd:string+        %GenJ:{ fname %},
+       foaf:familyName xsd:string        %GenJ:{ lname %}
+    ),
+    foaf:mbox IRI                        %GenJ:{ email %},
+    foaf:phone IRI?                      %GenJ:{ tel %}
+}
+</pre>
+        <pre style="float:left;">#BASE &lt;http://base.example/#&gt;
+PREFIX ex: &lt;http://ex.example/#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+&lt;Issue1&gt;
+    ex:state        ex:unassigned ;
+    ex:reportedBy   &lt;User2&gt; ;
+    ex:reportedOn   "2013-01-23T10:18:00"^^xsd:dateTime ;
+    ex:reproducedBy &lt;Thompson.J&gt; ;
+    ex:reproducedOn "2013-01-23T11:00:00"^^xsd:dateTime ;
+#    ex:related      &lt;Issue2&gt;, &lt;Issue3&gt; 
+.
+
+&lt;User2&gt;
+    foaf:givenName "Bob" ;
+    foaf:familyName "Smith" ;
+    foaf:mbox &lt;mailto:bob@example.org&gt;
+.
+
+&lt;Thompson.J&gt;
+    foaf:givenName "Joe", "Joseph" ;
+    foaf:familyName "Thompson" ;
+    foaf:phone &lt;tel:+456&gt; ;
+    foaf:mbox &lt;mailto:joe@example.org&gt;
+.
+
+</pre>
+        <pre style="float:left;">{"@context":{"ns0":"http://ex.example/#","state":"ns0:state","rprtBy":"ns0:reportedBy","ns1":"http://xmlns.com/foaf/","fname":"ns1:givenName","lname":"ns1:familyName","email":"ns1:mbox","ns2":"http://www.w3.org/2001/XMLSchema#","rprtOn":{"@id":"ns0:reportedOn","@type":"ns2:dateTime"},"rpdcBy":"ns0:reproducedBy","tel":"ns1:phone","rpdcOn":{"@id":"ns0:reproducedOn","@type":"ns2:dateTime"}},"@id":"Issue1","state":"http://ex.example/#unassigned","rprtBy":{"@id":"User2","fname":"Bob","lname":"Smith","email":"mailto:bob@example.org"},"rprtOn":"2013-01-23T10:18:00","rpdcBy":{"@id":"Thompson.J","fname":["Joe","Joseph"],"lname":"Thompson","email":"mailto:joe@example.org","tel":"tel:+456"},"rpdcOn":"2013-01-23T11:00:00"}</pre>
+        <div style="clear:both"></div>
+      </div>
+    </div>
+
+    <div>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>
+          <em>not doc'd</em>
+          <p>
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <address>
+      edited by: <a href="http://www.w3.org/People/Eric/">Eric Prud'hommeaux</a>
+    </address>
+  </body>
+</html>
