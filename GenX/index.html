@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="emacs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>ShExMap</title>
+    <link rel="stylesheet" href="local.css" type="text/css" />
+    <style type="text/css">
+      code { background-color: #dfd; }
+      .constant {
+        /* font-lock-constant-face */
+        color: #008b8b;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #a020f0;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #483d8b;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #8b2252;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #a0522d;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      pre { display: inline-block; }
+    </style>
+    	<script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+	    <script class='remove'>
+	      var respecConfig = {
+	          specStatus: "unofficial",
+	          shortName:  "shexmap",
+            edDraftURI: "http://shexspec.github.io/extensions/Map/",
+	          editors: [
+	                {   name:       "Eric Prud'hommeaux",
+	                    url:        "http://www.w3.org/People/Eric/",
+	                    company:    "W3C/MIT",
+	                    companyURL: "http://www.w3.org/" }
+	          ],
+	          wg:           "HCLS",
+	          wgURI:        "https://www.w3.org/wiki/HCLSIG",
+	          wgPublicList: "public-semweb-lifesci",
+	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
+	      };
+	    </script>
+  </head>
+
+  <body>
+    <div id="abstract">
+      <p>
+        GenX is a ShEx extension to leverage ShEx's unambiguous, ordered traversal of RDF graphs to produce XML documents.
+      </p>
+    </div>
+
+    <div>
+      <h2 id="example">Example</h2>
+      <p>
+        from the <a href="http://www.w3.org/2013/ShEx/FancyShExDemo.html?schemaURL=test/GenX/schema.shex&amp;dataURL=test/Issue-pass-date.ttl">ShEx Demo</a> (look for [Popup] or <a>link</a> in validation messages):
+      </p>
+      <div>
+        <pre style="float:left;">#BASE &lt;http://base.example/#&gt;
+PREFIX ex: &lt;http://ex.example/#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX GenX: &lt;http://shexspec.github.io/extensions/GenX/&gt;
+
+# directives:
+#   =&lt;function&gt;?
+#   $&lt;namespace&gt;
+#   !debugger
+                                %GenX:{ issue $http://ex.example/xml %}
+
+start = &lt;IssueShape&gt;
+
+&lt;IssueShape&gt; {
+    ex:state (ex:unassigned ex:assigned) %GenX:{ @state =substr(19) %},
+    ex:reportedBy @&lt;Person&gt;              %GenX:{ reported = %},
+    ex:reportedOn xsd:dateTime           %GenX:{ [-1]@date %},
+    (ex:reproducedBy @&lt;EmployeeShape&gt;    ,
+     ex:reproducedOn xsd:dateTime        %GenX:{ @date %}
+    )?                                   %GenX:{ reproduced = %},
+    ex:related @&lt;IssueShape&gt;*
+}                                        %GenX:{ @id %}
+VIRTUAL &lt;Person&gt; {
+    (foaf:name xsd:string                %GenX:{ full-name %}
+     | foaf:givenName xsd:string+        %GenX:{ given-name %},
+       foaf:familyName xsd:string        %GenX:{ family-name %}
+    ),
+    foaf:mbox IRI               %GenX:{ email-addr %}
+}
+&lt;UserShape&gt; &amp; &lt;Person&gt; {
+}
+&lt;EmployeeShape&gt; {
+    &amp; &lt;Person&gt;,
+    foaf:phone IRI+             %GenX:{ tel-number %}
+}
+</pre>
+        <pre style="float:left;">#BASE &lt;http://base.example/#&gt;
+PREFIX ex: &lt;http://ex.example/#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+&lt;Issue1&gt;
+    ex:state        ex:unassigned ;
+    ex:reportedBy   &lt;User2&gt; ;
+    ex:reportedOn   "2013-01-23T10:18:00"^^xsd:dateTime ;
+    ex:reproducedBy &lt;Thompson.J&gt; ;
+    ex:reproducedOn "2013-01-23T11:00:00"^^xsd:dateTime ;
+#    ex:related      &lt;Issue2&gt;, &lt;Issue3&gt; 
+.
+
+&lt;User2&gt;
+    foaf:givenName "Bob" ;
+    foaf:familyName "Smith" ;
+    foaf:mbox &lt;mailto:bob@example.org&gt;
+.
+
+&lt;Thompson.J&gt;
+    foaf:givenName "Joe", "Joseph" ;
+    foaf:familyName "Thompson" ;
+    foaf:phone &lt;tel:+456&gt; ;
+    foaf:mbox &lt;mailto:joe@example.org&gt;
+.
+
+</pre>
+        <pre style="float:left;">&lt;issue xmlns="http://ex.example/xml" id="Issue1" state="unassigned"&gt;
+&lt;reported date="2013-01-23T10:18:00"&gt;
+&lt;given-name&gt;Bob&lt;/given-name&gt;
+&lt;family-name&gt;Smith&lt;/family-name&gt;
+&lt;email-addr&gt;mailto:bob@example.org&lt;/email-addr&gt;
+&lt;/reported&gt;
+&lt;reproduced date="2013-01-23T11:00:00"&gt;
+&lt;given-name&gt;Joe&lt;/given-name&gt;
+&lt;given-name&gt;Joseph&lt;/given-name&gt;
+&lt;family-name&gt;Thompson&lt;/family-name&gt;
+&lt;email-addr&gt;mailto:joe@example.org&lt;/email-addr&gt;
+&lt;tel-number&gt;tel:+456&lt;/tel-number&gt;
+&lt;/reproduced&gt;
+&lt;/issue&gt;</pre>
+        <div style="clear:both"></div>
+      </div>
+    </div>
+
+    <div>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>
+          <em>not doc'd</em>
+          <p>
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <address>
+      edited by: <a href="http://www.w3.org/People/Eric/">Eric Prud'hommeaux</a>
+    </address>
+  </body>
+</html>
