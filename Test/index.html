@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="emacs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Test</title>
+    <style type="text/css">
+      code { background-color: #dfd; }
+      .constant {
+        /* font-lock-constant-face */
+        color: #008b8b;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #a020f0;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #483d8b;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #8b2252;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #a0522d;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      pre { display: inline-block; }
+
+      .example {
+        display: inline-block;
+      }
+      .example.wrapper {
+        background-color: #fff;
+      }
+      .example.wrapper pre {
+        background-color: #fcfaee;
+        margin-left: 0;
+        line-height: 1.2;
+        display: table;
+      }
+      .example.wrapper .fail {
+        background-color: #fceefa
+      }
+
+      pre.schema.shexc { background-color: #ECEBF7; border: thick solid #e4e3ec; }
+      pre.schema.json { background-color: #ECEBF7; border: thick solid #DCDBE7; }
+      .example.wrapper pre.output { background-color: #ECF7EB; border: thick solid #e4ece3; }
+      pre.instance { border: thick solid #f8f6ea; }
+      .verticalDivider {
+        float: left;
+        width: .5em;
+        border:thin solid #fff; /* disappears without this */
+      }
+
+.success { color: #0d0; }
+.schemaflow {
+    border-top: 1px solid #8fc;
+    border-bottom: 1px solid #8fc;
+    border-left: .25em solid #8fc;
+    border-right: .25em solid #8fc;
+}
+.dataflow {
+    border-top: 1px solid #7bf;
+    border-bottom: 1px solid #7bf;
+    border-left: .25em solid #7bf;
+    border-right: .25em solid #7bf;
+}
+.error {
+    color: #d00;
+}
+.prefix {
+    color: #228b22;
+}
+.localName {
+    color: #008b8b;
+}
+.IRI {
+    color: #00f;
+}
+.code {
+    color: #7bb;
+}
+.shapeName {
+    color: #a0522d;
+}
+    </style>
+
+    	<script src='../../primer/respec-w3c-common.js' async class='remove'></script>
+	    <script class='remove'>
+	      var respecConfig = {
+	          specStatus: "unofficial",
+	          shortName:  "test",
+            edDraftURI: "http://shexspec.github.io/extensions/Map/",
+	          editors: [
+	                {   name:       "Eric Prud'hommeaux",
+	                    url:        "http://www.w3.org/People/Eric/",
+	                    company:    "W3C/MIT",
+	                    companyURL: "http://www.w3.org/" }
+	          ],
+	          wg:           "HCLS",
+	          wgURI:        "https://www.w3.org/wiki/HCLSIG",
+	          wgPublicList: "public-semweb-lifesci",
+	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
+	      };
+	    </script>
+  </head>
+
+  <body>
+    <div id="abstract">
+      <p>
+        The ShEx <code>Test</code> extension is a very simple extension intended for testing ShEx extension frameworks.
+        <code>Test</code> participates in validate and has side-effects.
+      </p>
+    </div>
+
+    <section>
+      <h2 id="example">Example</h2>
+      <p>
+        The <code>Test</code> extension has two functions:
+      </p>
+      <ul>
+        <li><code>print(msg)</code> - emit some mesage</li>
+        <li><code>fail(msg)</code> - fail validation</li>
+      </ul>
+      <p>
+        Take a sample input schema with ShEx Test directives and input data:
+      </p>
+
+      <div id="simple-expressions-example-1" class="example wrapper">
+        <pre class="schema shexc textInput" style="display: block; float:left; ">
+<span class="keyword">PREFIX</span> <span class="prefix">ex:</span> <span class="IRI">&lt;http://ex.example/#&gt;</span>
+<span class="keyword">PREFIX</span> <span class="prefix">foaf:</span> <span class="IRI">&lt;http://xmlns.com/foaf/&gt;</span>
+<span class="keyword">PREFIX</span> <span class="prefix">xsd:</span> <span class="IRI">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span>
+<span class="keyword">PREFIX</span> <span class="prefix">test:</span> <span class="IRI">&lt;http://shexspec.github.io/extensions/Test/&gt;</span>
+
+<span class="code">%test:{  %}</span>
+
+start = <span class="shapeName">&lt;IssueShape&gt;</span>
+
+<span class="shapeName">&lt;IssueShape&gt;</span> {
+    <span class="prefix">ex:</span><span class="localName">reportedBy</span> @<span class="shapeName">&lt;UserShape&gt;</span>
+        <span class="code">%test:{ fail("some message") %}</span>,
+}
+
+<span class="shapeName">&lt;UserShape&gt;</span> {
+    <span class="prefix">foaf:</span><span class="localName">name</span> <span class="prefix">xsd:</span><span class="localName">string</span>
+        <span class="code">%test:{ print(o) %}</span>
+}</pre>
+          <div class="verticalDivider"><!-- acts as a divider --></div>
+        <pre style="float:left;">PREFIX ex: &lt;http://ex.example/#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/&gt;
+
+&lt;Issue1&gt; ex:reportedBy &lt;User2&gt; .
+&lt;User2&gt; foaf:name "Bob" .
+</pre>
+          <div class="verticalDivider"><!-- acts as a divider --></div>
+        <div style="clear:both"></div>
+      <p>
+        In the <a href="http://w3.org/brief/NDcz">ShEx Demo</a> we see a faiure:
+      </p>
+        <pre class="output"><div id="resNo0" class="resultsDiv" style="border-left: solid 1em #ddf; margin-bottom: 2ex;"><span class="success">&lt;Issue1&gt; matches &lt;IssueShape&gt;:</span><br/>PASS {
+  <span id="resNo0-0" onclick="hilight(&quot;resNo0-&quot;, [0], [0], [0]);"><span class="schemaflow">ex:reportedBy @&lt;UserShape&gt; %&lt;http://shexspec.github.io/extensions/Test/&gt;{ fail("some message") %}</span> matched by <span class="dataflow">&lt;Issue1&gt; ex:reportedBy &lt;User2&gt; .</span></span>
+    PASS {
+Errors:
+ ☹           <span id="resNo0-1" onclick="hilight(&quot;resNo0-&quot;, [1], [], []);" class="error">eval of {"some message"} rejected [[
+    &lt;http://xmlns.com/foaf/name&gt; &lt;http://www.w3.org/2001/XMLSchema#string&gt; %&lt;http://shexspec.github.io/extensions/Test/&gt;{ print(o) %} matched by &lt;User2&gt; &lt;http://xmlns.com/foaf/name&gt; "Bob".
+    ]]</span>
+Matches:
+      <span id="resNo0-2" onclick="hilight(&quot;resNo0-&quot;, [2], [1], [1]);"><span class="schemaflow">foaf:name xsd:string %&lt;http://shexspec.github.io/extensions/Test/&gt;{ print(o) %}</span> matched by <span class="dataflow">&lt;User2&gt; foaf:name "Bob" .</span></span>
+    }
+}No remaining triples.</div></pre>
+      <p>
+        Examining the output (look for [Popup] or <a>link</a> in validation messages) we see:
+      </p>
+      <pre>{
+  "prints": [
+    "Bob"
+  ]
+}</pre>
+
+      </div>
+
+    </section>
+
+    <section>
+      <h2 id="def">Definition</h2>
+      <p>
+        <code>Test</code> has a defined behavior when attached to a triple constraint.
+        Other behaviors of <code>Test</code> are unspecified.
+        There are two function in the <code>Test</code> extension:
+      </p>
+      <ul>
+        <li><code>print(msg)</code> - emit some mesage</li>
+        <li><code>fail(msg)</code> - fail validation</li>
+      </ul>
+      <p>
+        Each takes an argument, which is one of these four particles:
+      </p>
+      <ul>
+        <li><code>s</code> - the subject of the triple being evaluated.</li>
+        <li><code>p</code> - the predicate of the triple being evaluated.</li>
+        <li><code>o</code> - the object of the triple being evaluated.</li>
+        <li><code>\" ([^"]|\\")* \"</code> - a quoted string with escaped double quotes.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="parsing">Parsing</h2>
+      <p>
+        <code>Test</code> directives can be parsed with the regular expression <code>/^ *(fail|print) *\( *(?:(\"(?:[^\\"]|\\")*\")|([spo])) *\) *$/</code>.
+        The first capture group will be either "fail" or "print".
+        The second will capture quoted strings, including their quotation marks.
+        The third will captures the particles "s", "p", "o".
+        For any valid <code>Test</code> string, the first capture group and either the second or the third will be matched.
+      </p>
+    </section>
+
+    <div>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>
+          <em>
+            <code>Test</code> is not a practical extension (apart perhaps from debugging).
+            It has side effects as well as participating in validation.
+            The output when there is a failure is undefined.
+            Some implementations, as the example above, may include the output even if validation failed.
+            For these systems, <code>print</code> provides a <a href="https://en.wikipedia.org/wiki/Debugging#Print_debugging">print-debugging</a>.
+          </em>
+          <p>
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <address>
+      edited by: <a href="http://www.w3.org/People/Eric/">Eric Prud'hommeaux</a>
+    </address>
+  </body>
+</html>
