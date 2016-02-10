@@ -142,7 +142,7 @@
       <div>
         <h3 id="mappingMechanism">Mapping mechanism?</h3>
         <p>
-          As the models are described as ShEx schemas, the mappings between them are captured as shared "variables" in a <span class="preprocessor">%Map{ %}</span> extension.
+          As the models are described as ShEx schemas, the mappings between them are captured as shared "variables" in a <span class="preprocessor">%map:{ %}</span> extension.
           These variables are given full URLs which enables trivial disambiguation, as well as leveraging standard prefix conventions for easier lexical categorization.
         </p>
       </div>
@@ -156,12 +156,12 @@
             <pre class="example">
 <span class="variable-name">&lt;BPunitsDAM&gt;</span> {
     <span class="variable-name">:systolic</span> {
-        <span class="type">:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%Map{ bp:sysVal %}</span>,
-        <span class="type">:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%Map{ bp:sysUnits %}</span>
+        <span class="type">:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%map:{ bp:sysVal %}</span>,
+        <span class="type">:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%map:{ bp:sysUnits %}</span>
     },
     <span class="variable-name">:diastolic</span> {
-        <span class="type">:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%Map{ bp:diaVal %}</span>,
-        <span class="type">:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%Map{ bp:diaUnits %}</span>
+        <span class="type">:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%map:{ bp:diaVal %}</span>,
+        <span class="type">:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%map:{ bp:diaUnits %}</span>
     }
 }
             </pre>
@@ -172,8 +172,8 @@
             <pre class="example">
 <span class="variable-name">&lt;BPnormalizeDAM&gt;</span> {
     <span class="keyword">a</span> (<span class="type">:</span><span class="constant">CanonicalBloodPressure</span>),
-    <span class="type">:</span><span class="constant">systolicBPmmHg</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%Map{ cast(bp:sysVal, bp:sysUnits, "mmHg") %}</span>,
-    <span class="type">:</span><span class="constant">diastolicBPmmHg</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%Map{ cast(bp:diaUnits, bp:diaUnits, "mmHg") %}</span>
+    <span class="type">:</span><span class="constant">systolicBPmmHg</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%map:{ cast(bp:sysVal, bp:sysUnits, "mmHg") %}</span>,
+    <span class="type">:</span><span class="constant">diastolicBPmmHg</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%map:{ cast(bp:diaUnits, bp:diaUnits, "mmHg") %}</span>
 }
             </pre>
           </div>
@@ -193,8 +193,8 @@
     <span class="variable-name">fhir:coding</span> { <span class="type">fhir:</span><span class="constant">code</span> (<span class="type">sct:</span><span class="constant">Systolic_Blood_Pressure</span>) },
     <span class="variable-name">fhir:valueQuantity</span> {
         <span class="keyword">a</span> (<span class="type">fhir:</span><span class="constant">Quantity</span>)<span class="keyword">?</span>,
-        <span class="type">fhir:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%Map{ bp:sysVal %}</span>,
-        <span class="type">fhir:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%Map{ bp:sysUnits %}</span>
+        <span class="type">fhir:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%map:{ bp:sysVal %}</span>,
+        <span class="type">fhir:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%map:{ bp:sysUnits %}</span>
     },
 }
 <span class="variable-name">&lt;diaBP&gt;</span> {
@@ -202,13 +202,32 @@
     <span class="variable-name">fhir:coding</span> { <span class="type">fhir:</span><span class="constant">code</span> (<span class="type">sct:</span><span class="constant">Diastolic_Blood_Pressure</span>) },
     <span class="variable-name">fhir:valueQuantity</span> {
         <span class="keyword">a</span> (<span class="type">fhir:</span><span class="constant">Quantity</span>)<span class="keyword">?</span>,
-        <span class="type">fhir:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%Map{ bp:diaVal %}</span>,
-        <span class="type">fhir:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%Map{ bp:diaUnits %}</span>
+        <span class="type">fhir:</span><span class="constant">value</span> <span class="type">xsd:</span><span class="constant">float</span> <span class="preprocessor">%map:{ bp:diaVal %}</span>,
+        <span class="type">fhir:</span><span class="constant">units</span> <span class="type">xsd:</span><span class="constant">string</span> <span class="preprocessor">%map:{ bp:diaUnits %}</span>
     },
 }
 </pre>
 </div>
 </div>
+    </div>
+
+    <div>
+      <h2 id="Mechanism">Mechanism</h2>
+      <ol>
+        <li>Validate instance document with respect to source schema (say <a href="#BPFHIR">BP FHIR</a>)<br/>
+        produces variable bindings</li>
+        <li>Invoke <code>generate</code> with the start shape of the target schema (say <a href="BPDAM">BP DAM</a>) and a fresh bnode</li>
+        <li>The shape is <code>S</code> and the current subject is <code>B</code>.</li>
+        <li>for each property <code>P</code>:
+        <ol>
+          <li>if the property is a reference to shape <code>R</code>, create a fresh bnode <code>Bchild</code>, assert <code>(B, P, Bchild)</code>, invoke <code>generate</code> with the shape <code>R</code> and the subject <code>Bchild</code>.
+          </li>
+          <li>if the element is a leaf node (scalar value)<br/>
+          if the element has a variable and the variable is bound to <code>V</code>, assert <code>(B, P, V)</code></li>
+        </ol>
+        </li>
+        <li>The resulting graph of assertions should validate as the target schema.</li>
+      </ol>
     </div>
 
     <div>
@@ -227,7 +246,6 @@
             Mapping directed, labeled graphs to familiar n-ary predicates for use in e.g. Quick (CQL).
           </p>
         </li>
-        <li></li>
       </ul>
     </div>
 
