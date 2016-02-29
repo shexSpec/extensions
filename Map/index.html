@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <title>ShExMap</title>
-    <link rel="stylesheet" href="local.css" type="text/css" />
+    <!-- link rel="stylesheet" href="local.css" type="text/css" / -->
     <style type="text/css">
       code { background-color: #dfd; }
       .constant {
@@ -43,6 +43,60 @@
         text-decoration: underline;
       }
     </style>
+    <style type="text/css"> <!-- SGV styles -->
+      .doesnotexist {  } /* removing this disables following css (?!) */
+      .cover { fill:#ffffff }
+
+      .arc { stroke:#000000; }
+      .tpl { stroke:#7f7f7f; }
+
+      line.staticContent, polyline.staticContent { stroke:#c6c6ea; } text.staticContent { fill:#c6c6ea; }
+      line.personID     , polyline.personID      { stroke:#008000; } text.personID      { fill:#008000; }
+      line.personName   , polyline.personName    { stroke:#ffa500; } text.personName    { fill:#ffa500; }
+      line.sysUnits     , polyline.sysUnits      { stroke:#a52a2a; } text.sysUnits      { fill:#a52a2a; }
+      line.sysValue     , polyline.sysValue      { stroke:#8b6914; } text.sysValue      { fill:#8b6914; }
+      line.diaUnits     , polyline.diaUnits      { stroke:#ffc0cb; } text.diaUnits      { fill:#ffc0cb; }
+      line.diaValue     , polyline.diaValue      { stroke:#800080; } text.diaValue      { fill:#800080; }
+                                                                     text.node          { fill:#000000; }
+
+      #treemapArrows { fill:none; stroke-width:4 }
+      #treemapArrows .arrowhead {  }
+      #treemapArrows line { stroke-dasharray:5 }
+
+      #textmapArrows { fill:none; stroke:#7f7f7f; stroke-width:4 }
+      #textmapArrows .arrowhead {  }
+      #textmapArrows line { stroke-dasharray:5 }
+
+     .hl     { stroke:#007f00; color: #007f00; } /* font-weight: bold  ;  */
+     .ll     { stroke:#7f7f7f; color: #000000; } /* font-weight: normal;  */
+
+      #leftTree {
+        fill:none;
+        stroke-width:2;
+      }
+
+      #legend {
+        fill:none;
+        stroke-width:2;
+      }
+
+      #rightPatient {
+        fill:none;
+        stroke-width:2;
+      }
+
+      #rightObs1 {
+        fill:none;
+        stroke-width:2;
+      }
+
+      #rightObs2 {
+        fill:none;
+        stroke-width:2;
+      }
+
+      text { font-family: sans-serif; font-size: .8em; }
+    </style>
     	<script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
 	    <script class='remove'>
 	      var respecConfig = {
@@ -61,6 +115,26 @@
 	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
 	      };
 	    </script>
+    <script src="../../primer/jquery.min.js" type= "text/javascript"></script>
+    <script src="jquery.svg.min.js" type= "text/javascript"></script>
+    <script src="jquery.svgdom.js" type= "text/javascript"></script>
+    <script type="text/javascript"><!--
+function prepareHighlight (highlightables, onClass, offClass, slide) {
+  if (slide === undefined)
+    slide = $("body .namespace").last();
+  $.each( highlightables, function( index, value ){
+    var elts = slide.find( "."+value );
+    elts
+  	.mouseenter(function() {
+  	    elts.removeClass(offClass).addClass(onClass);
+  	})
+  	.mouseleave(function() {
+  	    elts.removeClass(onClass).addClass(offClass);
+  	})
+    .addClass(offClass);
+  })
+}
+--> </script>
   </head>
 
   <body>
@@ -210,7 +284,6 @@
 </div>
 </div>
     </div>
-
     <div>
       <h2 id="Mechanism">Mechanism</h2>
       <ol>
@@ -228,1659 +301,405 @@
         </li>
         <li>The resulting graph of assertions should validate as the target schema.</li>
       </ol>
-<svg
+
+<svg version="1.1"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="35cm"
-   height="32cm"
-   viewBox="40 18 687 625"
-   id="svg3553"
-   version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="BPmap.svg">
-  <metadata
-     id="metadata4081">
+   xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <metadata>
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <defs
-     id="defs4079" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1530"
-     inkscape:window-height="1103"
-     id="namedview4077"
-     showgrid="false"
-     inkscape:zoom="0.89076388"
-     inkscape:cx="494.34396"
-     inkscape:cy="681.94495"
-     inkscape:window-x="386"
-     inkscape:window-y="63"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
-  <g
-     inkscape:groupmode="layer"
-     id="layer3"
-     inkscape:label="sprites"
-     style="display:none">
-    <g
-       id="leftText">
-      <text
-         id="text3555"
-         y="60"
-         x="60"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#ffa500;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3557"
-           y="60"
-           x="60">Patient:Аника</tspan>
-      </text>
-      <text
-         id="text3563"
-         y="100"
-         x="60"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3565"
-           y="100"
-           x="60">BloodPressureReading:_:a</tspan>
-      </text>
-      <text
-         id="text3567"
-         y="120"
-         x="80"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3569"
-           y="120"
-           x="80">Systolic:_:b</tspan>
-      </text>
-      <text
-         id="text3571"
-         y="140"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#a52a2a;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3573"
-           y="140"
-           x="100">SystolicUnits:mmHg</tspan>
-      </text>
-      <text
-         id="text3575"
-         y="160"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#8b6914;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3577"
-           y="160"
-           x="100">SystolicValue:110</tspan>
-      </text>
-      <text
-         id="text3579"
-         y="180"
-         x="80"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3581"
-           y="180"
-           x="80">Diastolic:_:c</tspan>
-      </text>
-      <text
-         id="text3583"
-         y="200"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#ffc0cb;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3585"
-           y="200"
-           x="100">DiastolicUnits:mmHg</tspan>
-      </text>
-      <text
-         id="text3587"
-         y="220"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#800080;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3589"
-           y="220"
-           x="100">DiastolicValue:70</tspan>
-      </text>
-      <text
-         id="text3591"
-         y="80"
-         x="60"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#008000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3593"
-           y="80"
-           x="60">PatientID:1234567</tspan>
-      </text>
-      <text
-         id="text3627"
-         y="40"
-         x="40"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3629"
-           y="40"
-           x="40">:p1234567</tspan>
-      </text>
-      <text
-         id="text3635"
-         y="280"
-         x="80"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3637"
-           y="280"
-           x="80">Systolic:_:e</tspan>
-      </text>
-      <text
-         id="text3639"
-         y="300"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#a52a2a;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3641"
-           y="300"
-           x="100">SystolicUnits:mmHg</tspan>
-      </text>
-      <text
-         id="text3643"
-         y="320"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#8b6914;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3645"
-           y="320"
-           x="100">SystolicValue:110</tspan>
-      </text>
-      <text
-         id="text3647"
-         y="340"
-         x="80"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3649"
-           y="340"
-           x="80">Diastolic:_:f</tspan>
-      </text>
-      <text
-         id="text3651"
-         y="360"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#ffc0cb;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3653"
-           y="360"
-           x="100">DiastolicUnits:mmHg</tspan>
-      </text>
-      <text
-         id="text3655"
-         y="380"
-         x="100"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#800080;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3657"
-           y="380"
-           x="100">DiastolicValue:70</tspan>
-      </text>
-      <text
-         id="text3659"
-         y="260"
-         x="60"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3661"
-           y="260"
-           x="60">BloodPressureReading:_:d</tspan>
-      </text>
+  <defs>
+    <g id="leftText">
+      <text class="node"                        x="040" y="040">:p1234567</text>
+      <text class="personName"                  x="060" y="060">Patient:Аника</text>
+      <text class="personID"                    x="060" y="080">PatientID:1234567</text>
+      <text class="node"                        x="060" y="110">BloodPressureReading:</text>
+      <text class="node"                        x="080" y="130">Systolic:</text>
+      <text class="sysUnits"                    x="100" y="150">SystolicUnits:mmHg</text>
+      <text class="sysValue"                    x="100" y="170">SystolicValue:110</text>
+      <text class="node"                        x="080" y="190">Diastolic:</text>
+      <text class="diaUnits"                    x="100" y="210">DiastolicUnits:mmHg</text>
+      <text class="diaValue"                    x="100" y="230">DiastolicValue:70</text>
+      <text class="node"                        x="060" y="260">BloodPressureReading:</text>
+      <text class="node"                        x="080" y="280">Systolic:</text>
+      <text class="sysUnits"                    x="100" y="300">SystolicUnits:mmHg</text>
+      <text class="sysValue"                    x="100" y="320">SystolicValue:110</text>
+      <text class="node"                        x="080" y="340">Diastolic:</text>
+      <text class="diaUnits"                    x="100" y="360">DiastolicUnits:mmHg</text>
+      <text class="diaValue"                    x="100" y="380">DiastolicValue:70</text>
     </g>
-    <g
-       id="leftTree">
-      <line
-         id="line3959"
-         y2="440"
-         x2="120"
-         y1="400"
-         x1="140"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3961"
-         y2="440"
-         x2="140"
-         y1="400"
-         x1="140"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3963"
-         y2="440"
-         x2="180"
-         y1="400"
-         x1="140"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3965"
-         y2="500"
-         x2="140"
-         y1="460"
-         x1="160"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3967"
-         y2="500"
-         x2="160"
-         y1="460"
-         x1="160"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3969"
-         y2="500"
-         x2="200"
-         y1="460"
-         x1="200"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3971"
-         y2="500"
-         x2="240"
-         y1="460"
-         x1="200"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3973"
-         y2="560"
-         x2="120"
-         y1="520"
-         x1="140"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3975"
-         y2="560"
-         x2="140"
-         y1="520"
-         x1="140"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3977"
-         y2="560"
-         x2="160"
-         y1="520"
-         x1="160"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3979"
-         y2="560"
-         x2="180"
-         y1="520"
-         x1="160"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3981"
-         y2="560"
-         x2="200"
-         y1="520"
-         x1="200"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3983"
-         y2="560"
-         x2="220"
-         y1="520"
-         x1="200"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3985"
-         y2="560"
-         x2="240"
-         y1="520"
-         x1="240"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <line
-         id="line3987"
-         y2="560"
-         x2="260"
-         y1="520"
-         x1="240"
-         style="fill:none;stroke:#000000;stroke-width:2" />
-      <g
-         id="g3989">
-        <line
-           id="line3991"
-           y2="455.52802"
-           x2="120"
-           y1="440"
-           x1="120"
-           style="fill:none;stroke:#ffa500;stroke-width:2" />
-        <polyline
-           id="polyline3993"
-           points="115,447.764 120,457.764 125,447.764 "
-           style="fill:none;stroke:#ffa500;stroke-width:2" />
+    <g id="textmapArrows">
+      <g id="textmapArrow_p2p">
+        <line                                   x1="250.593" y1="45.9086" x2="388.18799" y2="42.330101" />
+        <polygon class="cover"                  points="388.679,47.3059 398.14,41.348 387.697,37.3543 " />
+        <polygon                                points="388.679,47.3059 398.14,41.348 387.697,37.3543 " />
       </g>
-      <g
-         id="g3995">
-        <line
-           id="line3997"
-           y2="455.52802"
-           x2="140"
-           y1="440"
-           x1="140"
-           style="fill:none;stroke:#008000;stroke-width:2" />
-        <polyline
-           id="polyline3999"
-           points="135,447.764 140,457.764 145,447.764 "
-           style="fill:none;stroke:#008000;stroke-width:2" />
+      <g id="textmapArrow_obs1">
+        <line                                   x1="250.593" y1="107.907898" x2="388.254" y2="116.927" />
+        <polygon class="cover"                  points="387.57,121.88 398.16,118.296 388.938,111.974 " />
+        <polygon                                points="387.57,121.88 398.16,118.296 388.938,111.974 " />
       </g>
-      <line
-         id="line4001"
-         y2="460"
-         x2="160"
-         y1="440"
-         x1="180"
-         style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-      <line
-         id="line4003"
-         y2="460"
-         x2="200"
-         y1="440"
-         x1="180"
-         style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-      <g
-         id="g4005">
-        <line
-           id="line4007"
-           y2="515.52802"
-           x2="140"
-           y1="500"
-           x1="140"
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-        <polyline
-           id="polyline4009"
-           points="135,507.764 140,517.764 145,507.764 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-      </g>
-      <g
-         id="g4011">
-        <line
-           id="line4013"
-           y2="515.52802"
-           x2="160"
-           y1="500"
-           x1="160"
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-        <polyline
-           id="polyline4015"
-           points="155,507.764 160,517.764 165,507.764 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-      </g>
-      <g
-         id="g4017">
-        <line
-           id="line4019"
-           y2="515.52802"
-           x2="200"
-           y1="500"
-           x1="200"
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-        <polyline
-           id="polyline4021"
-           points="195,507.764 200,517.764 205,507.764 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-      </g>
-      <g
-         id="g4023">
-        <line
-           id="line4025"
-           y2="515.52802"
-           x2="240"
-           y1="500"
-           x1="240"
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-        <polyline
-           id="polyline4027"
-           points="235,507.764 240,517.764 245,507.764 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:2" />
-      </g>
-      <g
-         id="g4029">
-        <line
-           id="line4031"
-           y2="575.52802"
-           x2="120"
-           y1="560"
-           x1="120"
-           style="fill:none;stroke:#a52a2a;stroke-width:2" />
-        <polyline
-           id="polyline4033"
-           points="115,567.764 120,577.764 125,567.764 "
-           style="fill:none;stroke:#a52a2a;stroke-width:2" />
-      </g>
-      <g
-         id="g4035">
-        <line
-           id="line4037"
-           y2="575.52802"
-           x2="140"
-           y1="560"
-           x1="140"
-           style="fill:none;stroke:#8b6914;stroke-width:2" />
-        <polyline
-           id="polyline4039"
-           points="135,567.764 140,577.764 145,567.764 "
-           style="fill:none;stroke:#8b6914;stroke-width:2" />
-      </g>
-      <g
-         id="g4041">
-        <line
-           id="line4043"
-           y2="575.52802"
-           x2="160"
-           y1="560"
-           x1="160"
-           style="fill:none;stroke:#ffc0cb;stroke-width:2" />
-        <polyline
-           id="polyline4045"
-           points="155,567.764 160,577.764 165,567.764 "
-           style="fill:none;stroke:#ffc0cb;stroke-width:2" />
-      </g>
-      <g
-         id="g4047">
-        <line
-           id="line4049"
-           y2="575.52802"
-           x2="180"
-           y1="560"
-           x1="180"
-           style="fill:none;stroke:#800080;stroke-width:2" />
-        <polyline
-           id="polyline4051"
-           points="175,567.764 180,577.764 185,567.764 "
-           style="fill:none;stroke:#800080;stroke-width:2" />
-      </g>
-      <g
-         id="g4053">
-        <line
-           id="line4055"
-           y2="575.52802"
-           x2="200"
-           y1="560"
-           x1="200"
-           style="fill:none;stroke:#a52a2a;stroke-width:2" />
-        <polyline
-           id="polyline4057"
-           points="195,567.764 200,577.764 205,567.764 "
-           style="fill:none;stroke:#a52a2a;stroke-width:2" />
-      </g>
-      <g
-         id="g4059">
-        <line
-           id="line4061"
-           y2="575.52802"
-           x2="220"
-           y1="560"
-           x1="220"
-           style="fill:none;stroke:#8b6914;stroke-width:2" />
-        <polyline
-           id="polyline4063"
-           points="215,567.764 220,577.764 225,567.764 "
-           style="fill:none;stroke:#8b6914;stroke-width:2" />
-      </g>
-      <g
-         id="g4065">
-        <line
-           id="line4067"
-           y2="575.52802"
-           x2="240"
-           y1="560"
-           x1="240"
-           style="fill:none;stroke:#ffc0cb;stroke-width:2" />
-        <polyline
-           id="polyline4069"
-           points="235,567.764 240,577.764 245,567.764 "
-           style="fill:none;stroke:#ffc0cb;stroke-width:2" />
-      </g>
-      <g
-         id="g4071">
-        <line
-           id="line4073"
-           y2="575.52802"
-           x2="260"
-           y1="560"
-           x1="260"
-           style="fill:none;stroke:#800080;stroke-width:2" />
-        <polyline
-           id="polyline4075"
-           points="255,567.764 260,577.764 265,567.764 "
-           style="fill:none;stroke:#800080;stroke-width:2" />
+      <g id="textmapArrow_obs2">
+        <line                                   x1="250.04601" y1="259.759" x2="392.26401" y2="372.89401" />
+        <polygon class="cover"                  points="389.152,376.807 400.09,379.119 395.377,368.981 " />
+        <polygon                                points="389.152,376.807 400.09,379.119 395.377,368.981 " />
       </g>
     </g>
-    <g
-       id="arrows">
-      <g
-         id="g3747">
-        <line
-           id="line3749"
-           y2="42.330101"
-           x2="388.18799"
-           y1="55.9086"
-           x1="250.593"
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
-        <polygon
-           id="polygon3751"
-           points="388.679,47.3059 398.14,41.348 387.697,37.3543 "
-           style="fill:#ffffff" />
-        <polygon
-           id="polygon3753"
-           points="388.679,47.3059 398.14,41.348 387.697,37.3543 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
+    <g id="leftTree">
+      <line class="arc"                         x1="140" y1="400" x2="120" y2="440" />
+      <line class="arc"                         x1="140" y1="400" x2="140" y2="440" />
+      <line class="arc"                         x1="140" y1="400" x2="180" y2="440" />
+      <line class="arc"                         x1="160" y1="460" x2="140" y2="500" />
+      <line class="arc"                         x1="160" y1="460" x2="160" y2="500" />
+      <line class="arc"                         x1="200" y1="460" x2="200" y2="500" />
+      <line class="arc"                         x1="200" y1="460" x2="240" y2="500" />
+      <line class="arc"                         x1="140" y1="520" x2="120" y2="560" />
+      <line class="arc"                         x1="140" y1="520" x2="140" y2="560" />
+      <line class="arc"                         x1="160" y1="520" x2="160" y2="560" />
+      <line class="arc"                         x1="160" y1="520" x2="180" y2="560" />
+      <line class="arc"                         x1="200" y1="520" x2="200" y2="560" />
+      <line class="arc"                         x1="200" y1="520" x2="220" y2="560" />
+      <line class="arc"                         x1="240" y1="520" x2="240" y2="560" />
+      <line class="arc"                         x1="240" y1="520" x2="260" y2="560" />
+      <g>
+        <line class="personName"                x1="120" y1="440" x2="120" y2="455.52802" />
+        <polyline class="personName"            points="115,447.764 120,457.764 125,447.764 " />
       </g>
-      <g
-         id="g3755">
-        <line
-           id="line3757"
-           y2="116.927"
-           x2="388.254"
-           y1="97.907898"
-           x1="250.593"
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
-        <polygon
-           id="polygon3759"
-           points="387.57,121.88 398.16,118.296 388.938,111.974 "
-           style="fill:#ffffff" />
-        <polygon
-           id="polygon3761"
-           points="387.57,121.88 398.16,118.296 388.938,111.974 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
+      <g>
+        <line class="personID"                  x1="140" y1="440" x2="140" y2="455.52802" />
+        <polyline class="personID"              points="135,447.764 140,457.764 145,447.764 " />
       </g>
-      <g
-         id="g3763">
-        <line
-           id="line3765"
-           y2="372.89401"
-           x2="392.26401"
-           y1="259.759"
-           x1="250.04601"
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
-        <polygon
-           id="polygon3767"
-           points="389.152,376.807 400.09,379.119 395.377,368.981 "
-           style="fill:#ffffff" />
-        <polygon
-           id="polygon3769"
-           points="389.152,376.807 400.09,379.119 395.377,368.981 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
+      <g id="leftSplit">
+        <line class="tpl"                       x1="180" y1="440" x2="160" y2="460" />
+        <polyline class="tpl"                   points="165.117,447.812 161.581,458.419 172.188,454.883 " />
+        <line class="tpl"                       x1="180" y1="440" x2="200" y2="460" />
+        <polyline class="tpl"                   points="187.812,454.883 198.419,458.419 194.883,447.812  " />
+      </g>
+      <g>
+        <line class="tpl"                       x1="140" y1="500" x2="140" y2="515.52802" />
+        <polyline class="tpl"                   points="135,507.764 140,517.764 145,507.764 " />
+      </g>
+      <g>
+        <line class="tpl"                       x1="160" y1="500" x2="160" y2="515.52802" />
+        <polyline class="tpl"                   points="155,507.764 160,517.764 165,507.764 " />
+      </g>
+      <g>
+        <line class="tpl"                       x1="200" y1="500" x2="200" y2="515.52802" />
+        <polyline class="tpl"                   points="195,507.764 200,517.764 205,507.764 " />
+      </g>
+      <g>
+        <line class="tpl"                       x1="240" y1="500" x2="240" y2="515.52802" />
+        <polyline class="tpl"                   points="235,507.764 240,517.764 245,507.764 " />
+      </g>
+      <g>
+        <line class="sysUnits"                  x1="120" y1="560" x2="120" y2="575.52802" />
+        <polyline class="sysUnits"              points="115,567.764 120,577.764 125,567.764 " />
+      </g>
+      <g>
+        <line class="sysValue"                  x1="140" y1="560" x2="140" y2="575.52802" />
+        <polyline class="sysValue"              points="135,567.764 140,577.764 145,567.764 " />
+      </g>
+      <g>
+        <line class="diaUnits"                  x1="160" y1="560" x2="160" y2="575.52802" />
+        <polyline class="diaUnits"              points="155,567.764 160,577.764 165,567.764 " />
+      </g>
+      <g>
+        <line class="diaValue"                  x1="180" y1="560" x2="180" y2="575.52802" />
+        <polyline class="diaValue"              points="175,567.764 180,577.764 185,567.764 " />
+      </g>
+      <g>
+        <line class="sysUnits"                  x1="200" y1="560" x2="200" y2="575.52802" />
+        <polyline class="sysUnits"              points="195,567.764 200,577.764 205,567.764 " />
+      </g>
+      <g>
+        <line class="sysValue"                  x1="220" y1="560" x2="220" y2="575.52802" />
+        <polyline class="sysValue"              points="215,567.764 220,577.764 225,567.764 " />
+      </g>
+      <g>
+        <line class="diaUnits"                  x1="240" y1="560" x2="240" y2="575.52802" />
+        <polyline class="diaUnits"              points="235,567.764 240,577.764 245,567.764 " />
+      </g>
+      <g>
+        <line class="diaValue"                  x1="260" y1="560" x2="260" y2="575.52802" />
+        <polyline class="diaValue"              points="255,567.764 260,577.764 265,567.764 " />
       </g>
     </g>
-    <g
-       id="rightText">
-      <text
-         id="text3595"
-         y="60"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#ffa500;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3597"
-           y="60"
-           x="440">personName:Аника</tspan>
-      </text>
-      <text
-         id="text3599"
-         y="120"
-         x="420"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3601"
-           y="120"
-           x="420">:Patient-1234567.Obs1</tspan>
-      </text>
-      <text
-         id="text3603"
-         y="180"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3605"
-           y="180"
-           x="440">related:</tspan>
-      </text>
-      <text
-         id="text3607"
-         y="240"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#a52a2a;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3609"
-           y="240"
-           x="480">units:mmHg</tspan>
-      </text>
-      <text
-         id="text3611"
-         y="260"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#8b6914;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3613"
-           y="260"
-           x="480">value:110</tspan>
-      </text>
-      <text
-         id="text3615"
-         y="80"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#008000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3617"
-           y="80"
-           x="440">personID:1234567</tspan>
-      </text>
-      <text
-         id="text3619"
-         y="40"
-         x="420"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3621"
-           y="40"
-           x="420">:Patient-1234567</tspan>
-      </text>
-      <text
-         id="text3623"
-         y="160"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#008000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3625"
-           y="160"
-           x="440">subjectID:1234567</tspan>
-      </text>
-      <text
-         id="text3663"
-         y="140"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#7f7f7f;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3665"
-           y="140"
-           x="440">code:BloodPressure</tspan>
-      </text>
-      <text
-         id="text3667"
-         y="200"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#7f7f7f;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3669"
-           y="200"
-           x="460">code:SystolicBloodPressure</tspan>
-      </text>
-      <text
-         id="text3671"
-         y="220"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3673"
-           y="220"
-           x="460">quantity:</tspan>
-      </text>
-      <text
-         id="text3675"
-         y="280"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3677"
-           y="280"
-           x="440">related:</tspan>
-      </text>
-      <text
-         id="text3679"
-         y="340"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#ffc0cb;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3681"
-           y="340"
-           x="480">units:mmHg</tspan>
-      </text>
-      <text
-         id="text3683"
-         y="360"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#800080;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3685"
-           y="360"
-           x="480">value:110</tspan>
-      </text>
-      <text
-         id="text3687"
-         y="300"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#7f7f7f;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3689"
-           y="300"
-           x="460">code:SystolicBloodPressure</tspan>
-      </text>
-      <text
-         id="text3691"
-         y="320"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3693"
-           y="320"
-           x="460">quantity:</tspan>
-      </text>
-      <text
-         id="text3695"
-         y="400"
-         x="420"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3697"
-           y="400"
-           x="420">:Patient-1234567.Obs2</tspan>
-      </text>
-      <text
-         id="text3699"
-         y="460"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3701"
-           y="460"
-           x="440">related:</tspan>
-      </text>
-      <text
-         id="text3703"
-         y="520"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#a52a2a;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3705"
-           y="520"
-           x="480">units:mmHg</tspan>
-      </text>
-      <text
-         id="text3707"
-         y="540"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#8b6914;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3709"
-           y="540"
-           x="480">value:110</tspan>
-      </text>
-      <text
-         id="text3711"
-         y="440"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#008000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3713"
-           y="440"
-           x="440">subjectID:1234567</tspan>
-      </text>
-      <text
-         id="text3715"
-         y="420"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#7f7f7f;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3717"
-           y="420"
-           x="440">code:BloodPressure</tspan>
-      </text>
-      <text
-         id="text3719"
-         y="480"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#7f7f7f;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3721"
-           y="480"
-           x="460">code:SystolicBloodPressure</tspan>
-      </text>
-      <text
-         id="text3723"
-         y="500"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3725"
-           y="500"
-           x="460">quantity:</tspan>
-      </text>
-      <text
-         id="text3727"
-         y="560"
-         x="440"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3729"
-           y="560"
-           x="440">related:</tspan>
-      </text>
-      <text
-         id="text3731"
-         y="620"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#ffc0cb;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3733"
-           y="620"
-           x="480">units:mmHg</tspan>
-      </text>
-      <text
-         id="text3735"
-         y="640"
-         x="480"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#800080;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3737"
-           y="640"
-           x="480">value:110</tspan>
-      </text>
-      <text
-         id="text3739"
-         y="580"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#7f7f7f;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3741"
-           y="580"
-           x="460">code:SystolicBloodPressure</tspan>
-      </text>
-      <text
-         id="text3743"
-         y="600"
-         x="460"
-         style="font-size:12.79979992px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
-         font-size="12.7998">
-        <tspan
-           id="tspan3745"
-           y="600"
-           x="460">quantity:</tspan>
-      </text>
+    <g id="rightText">
+      <text class="node"                        x="420" y="040">:Patient-1234567</text>
+      <text class="personName"                  x="440" y="060">personName:Аника</text>
+      <text class="personID"                    x="440" y="080">personID:1234567</text>
+      <text class="node"                        x="420" y="120">:Patient-1234567.Obs1</text>
+      <text class="staticContent"               x="440" y="140">code:BloodPressure</text>
+      <text class="personID"                    x="440" y="160">subjectID:1234567</text>
+      <text class="node"                        x="440" y="180">related:</text>
+      <text class="staticContent"               x="460" y="200">code:SystolicBloodPressure</text>
+      <text class="node"                        x="460" y="220">quantity:</text>
+      <text class="sysUnits"                    x="480" y="240">units:mmHg</text>
+      <text class="sysValue"                    x="480" y="260">value:110</text>
+      <text class="node"                        x="440" y="280">related:</text>
+      <text class="staticContent"               x="460" y="300">code:DiastolicBloodPressure</text>
+      <text class="node"                        x="460" y="320">quantity:</text>
+      <text class="diaUnits"                    x="480" y="340">units:mmHg</text>
+      <text class="diaValue"                    x="480" y="360">value:70</text>
+      <text class="node"                        x="420" y="400">:Patient-1234567.Obs2</text>
+      <text class="staticContent"               x="440" y="420">code:BloodPressure</text>
+      <text class="personID"                    x="440" y="440">subjectID:1234567</text>
+      <text class="node"                        x="440" y="460">related:</text>
+      <text class="staticContent"               x="460" y="480">code:SystolicBloodPressure</text>
+      <text class="node"                        x="460" y="500">quantity:</text>
+      <text class="sysUnits"                    x="480" y="520">units:mmHg</text>
+      <text class="sysValue"                    x="480" y="540">value:110</text>
+      <text class="node"                        x="440" y="560">related:</text>
+      <text class="staticContent"               x="460" y="580">code:DiastolicBloodPressure</text>
+      <text class="node"                        x="460" y="600">quantity:</text>
+      <text class="diaUnits"                    x="480" y="620">units:mmHg</text>
+      <text class="diaValue"                    x="480" y="640">value:70</text>
     </g>
     <g
-       id="rightTree">
+       id="rightTrees">
       <g
          id="rightObs1">
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="120"
-           x2="620"
-           y2="160"
-           id="line3771" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="120"
-           x2="640"
-           y2="160"
-           id="line3773" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="120"
-           x2="680"
-           y2="160"
-           id="line3775" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="180"
-           x2="640"
-           y2="220"
-           id="line3777" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="180"
-           x2="660"
-           y2="220"
-           id="line3779" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="180"
-           x2="680"
-           y2="220"
-           id="line3781" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="180"
-           x2="700"
-           y2="220"
-           id="line3783" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="240"
-           x2="660"
-           y2="280"
-           id="line3785" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="240"
-           x2="680"
-           y2="280"
-           id="line3787" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="240"
-           x2="700"
-           y2="280"
-           id="line3789" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="240"
-           x2="720"
-           y2="280"
-           id="line3791" />
-        <g
-           id="g3793">
-          <line
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             x1="620"
-             y1="160"
-             x2="620"
-             y2="175.528"
-             id="line3795" />
-          <polyline
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             points="615,167.764 620,177.764 625,167.764 "
-             id="polyline3797" />
+        <line class="arc"                       x1="640" y1="120" x2="620" y2="160" />
+        <line class="arc"                       x1="640" y1="120" x2="640" y2="160" />
+        <line class="arc"                       x1="640" y1="120" x2="680" y2="160" />
+        <line class="arc"                       x1="660" y1="180" x2="640" y2="220" />
+        <line class="arc"                       x1="660" y1="180" x2="660" y2="220" />
+        <line class="arc"                       x1="700" y1="180" x2="680" y2="220" />
+        <line class="arc"                       x1="700" y1="180" x2="700" y2="220" />
+        <line class="arc"                       x1="660" y1="240" x2="660" y2="280" />
+        <line class="arc"                       x1="660" y1="240" x2="680" y2="280" />
+        <line class="arc"                       x1="700" y1="240" x2="700" y2="280" />
+        <line class="arc"                       x1="700" y1="240" x2="720" y2="280" />
+        <g>
+          <line class="staticContent"           x1="620" y1="160" x2="620" y2="175.528" />
+          <polyline class="staticContent"       points="615,167.764 620,177.764 625,167.764 " />
         </g>
-        <g
-           id="g3799">
-          <line
-             style="fill:none;stroke:#008000;stroke-width:2"
-             x1="640"
-             y1="160"
-             x2="640"
-             y2="175.528"
-             id="line3801" />
-          <polyline
-             style="fill:none;stroke:#008000;stroke-width:2"
-             points="635,167.764 640,177.764 645,167.764 "
-             id="polyline3803" />
+        <g>
+          <line class="personID"                x1="640" y1="160" x2="640" y2="175.528" />
+          <polyline class="personID"            points="635,167.764 640,177.764 645,167.764 " />
         </g>
-        <line
-           style="fill:none;stroke:#7f7f7f;stroke-width:2"
-           x1="680"
-           y1="160"
-           x2="660"
-           y2="180"
-           id="line3805" />
-        <line
-           style="fill:none;stroke:#7f7f7f;stroke-width:2"
-           x1="680"
-           y1="160"
-           x2="700"
-           y2="180"
-           id="line3807" />
-        <g
-           id="g3809">
-          <line
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             x1="640"
-             y1="220"
-             x2="640"
-             y2="235.528"
-             id="line3811" />
-          <polyline
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             points="635,227.764 640,237.764 645,227.764 "
-             id="polyline3813" />
+        <g id="obs1Split">
+          <line class="tpl"                     x1="680" y1="160" x2="660" y2="180" />
+          <polyline class="tpl"                 points="665.117,167.812 661.581,178.419 672.188,174.883 " />
+          <line class="tpl"                     x1="680" y1="160" x2="700" y2="180" />
+          <polyline class="tpl"                 points="687.812,174.883 698.419,178.419 694.883,167.812  " />
         </g>
-        <g
-           id="g3815">
-          <line
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             x1="660"
-             y1="220"
-             x2="660"
-             y2="235.528"
-             id="line3817" />
-          <polyline
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             points="655,227.764 660,237.764 665,227.764 "
-             id="polyline3819" />
+        <g>
+          <line class="staticContent"           x1="640" y1="220" x2="640" y2="235.528" />
+          <polyline class="staticContent"       points="635,227.764 640,237.764 645,227.764 " />
         </g>
-        <g
-           id="g3821">
-          <line
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             x1="680"
-             y1="220"
-             x2="680"
-             y2="235.528"
-             id="line3823" />
-          <polyline
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             points="675,227.764 680,237.764 685,227.764 "
-             id="polyline3825" />
+        <g>
+          <line class="tpl"                     x1="660" y1="220" x2="660" y2="235.528" />
+          <polyline class="tpl"                 points="655,227.764 660,237.764 665,227.764 " />
         </g>
-        <g
-           id="g3827">
-          <line
-             style="fill:none;stroke:#a52a2a;stroke-width:2"
-             x1="660"
-             y1="280"
-             x2="660"
-             y2="295.52802"
-             id="line3829" />
-          <polyline
-             style="fill:none;stroke:#a52a2a;stroke-width:2"
-             points="655,287.764 660,297.764 665,287.764 "
-             id="polyline3831" />
+        <g>
+          <line class="staticContent"           x1="680" y1="220" x2="680" y2="235.528" />
+          <polyline class="staticContent"       points="675,227.764 680,237.764 685,227.764 " />
         </g>
-        <g
-           id="g3833">
-          <line
-             style="fill:none;stroke:#8b6914;stroke-width:2"
-             x1="680"
-             y1="280"
-             x2="680"
-             y2="295.52802"
-             id="line3835" />
-          <polyline
-             style="fill:none;stroke:#8b6914;stroke-width:2"
-             points="675,287.764 680,297.764 685,287.764 "
-             id="polyline3837" />
+        <g>
+          <line class="sysUnits"                x1="660" y1="280" x2="660" y2="295.52802" />
+          <polyline class="sysUnits"            points="655,287.764 660,297.764 665,287.764 " />
         </g>
-        <g
-           id="g3839">
-          <line
-             style="fill:none;stroke:#ffc0cb;stroke-width:2"
-             x1="700"
-             y1="280"
-             x2="700"
-             y2="295.52802"
-             id="line3841" />
-          <polyline
-             style="fill:none;stroke:#ffc0cb;stroke-width:2"
-             points="695,287.764 700,297.764 705,287.764 "
-             id="polyline3843" />
+        <g>
+          <line class="sysValue"                x1="680" y1="280" x2="680" y2="295.52802" />
+          <polyline class="sysValue"            points="675,287.764 680,297.764 685,287.764 " />
         </g>
-        <g
-           id="g3845">
-          <line
-             style="fill:none;stroke:#800080;stroke-width:2"
-             x1="720"
-             y1="280"
-             x2="720"
-             y2="295.52802"
-             id="line3847" />
-          <polyline
-             style="fill:none;stroke:#800080;stroke-width:2"
-             points="715,287.764 720,297.764 725,287.764 "
-             id="polyline3849" />
+        <g>
+          <line class="diaUnits"                x1="700" y1="280" x2="700" y2="295.52802" />
+          <polyline class="diaUnits"            points="695,287.764 700,297.764 705,287.764 " />
         </g>
-        <g
-           id="g3851">
-          <line
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             x1="700"
-             y1="220"
-             x2="700"
-             y2="235.528"
-             id="line3853" />
-          <polyline
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             points="695,227.764 700,237.764 705,227.764 "
-             id="polyline3855" />
+        <g>
+          <line class="diaValue"                x1="720" y1="280" x2="720" y2="295.52802" />
+          <polyline class="diaValue"            points="715,287.764 720,297.764 725,287.764 " />
+        </g>
+        <g>
+          <line class="tpl"                     x1="700" y1="220" x2="700" y2="235.528" />
+          <polyline class="tpl"                 points="695,227.764 700,237.764 705,227.764 " />
         </g>
       </g>
       <g
          id="rightObs2">
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="400"
-           x2="620"
-           y2="440"
-           id="line3857" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="400"
-           x2="640"
-           y2="440"
-           id="line3859" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="400"
-           x2="680"
-           y2="440"
-           id="line3861" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="460"
-           x2="640"
-           y2="500"
-           id="line3863" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="460"
-           x2="660"
-           y2="500"
-           id="line3865" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="460"
-           x2="680"
-           y2="500"
-           id="line3867" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="460"
-           x2="700"
-           y2="500"
-           id="line3869" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="520"
-           x2="660"
-           y2="560"
-           id="line3871" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="660"
-           y1="520"
-           x2="680"
-           y2="560"
-           id="line3873" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="520"
-           x2="700"
-           y2="560"
-           id="line3875" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="700"
-           y1="520"
-           x2="720"
-           y2="560"
-           id="line3877" />
-        <g
-           id="g3879">
-          <line
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             x1="620"
-             y1="440"
-             x2="620"
-             y2="455.52802"
-             id="line3881" />
-          <polyline
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             points="615,447.764 620,457.764 625,447.764 "
-             id="polyline3883" />
+        <line class="arc"                       x1="640" y1="400" x2="620" y2="440" />
+        <line class="arc"                       x1="640" y1="400" x2="640" y2="440" />
+        <line class="arc"                       x1="640" y1="400" x2="680" y2="440" />
+        <line class="arc"                       x1="660" y1="460" x2="640" y2="500" />
+        <line class="arc"                       x1="660" y1="460" x2="660" y2="500" />
+        <line class="arc"                       x1="700" y1="460" x2="680" y2="500" />
+        <line class="arc"                       x1="700" y1="460" x2="700" y2="500" />
+        <line class="arc"                       x1="660" y1="520" x2="660" y2="560" />
+        <line class="arc"                       x1="660" y1="520" x2="680" y2="560" />
+        <line class="arc"                       x1="700" y1="520" x2="700" y2="560" />
+        <line class="arc"                       x1="700" y1="520" x2="720" y2="560" />
+        <g>
+          <line class="staticContent"           x1="620" y1="440" x2="620" y2="455.52802" />
+          <polyline class="staticContent"       points="615,447.764 620,457.764 625,447.764 " />
         </g>
-        <g
-           id="g3885">
-          <line
-             style="fill:none;stroke:#008000;stroke-width:2"
-             x1="640"
-             y1="440"
-             x2="640"
-             y2="455.52802"
-             id="line3887" />
-          <polyline
-             style="fill:none;stroke:#008000;stroke-width:2"
-             points="635,447.764 640,457.764 645,447.764 "
-             id="polyline3889" />
+        <g>
+          <line class="personID"                x1="640" y1="440" x2="640" y2="455.52802" />
+          <polyline class="personID"            points="635,447.764 640,457.764 645,447.764 " />
         </g>
-        <line
-           style="fill:none;stroke:#7f7f7f;stroke-width:2"
-           x1="680"
-           y1="440"
-           x2="660"
-           y2="460"
-           id="line3891" />
-        <line
-           style="fill:none;stroke:#7f7f7f;stroke-width:2"
-           x1="680"
-           y1="440"
-           x2="700"
-           y2="460"
-           id="line3893" />
-        <g
-           id="g3895">
-          <line
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             x1="640"
-             y1="500"
-             x2="640"
-             y2="515.52802"
-             id="line3897" />
-          <polyline
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             points="635,507.764 640,517.764 645,507.764 "
-             id="polyline3899" />
+        <g id="obs2Split">
+          <line class="tpl"                     x1="680" y1="440" x2="660" y2="460" />
+          <polyline class="tpl"                 points="665.117,447.812 661.581,458.419 672.188,454.883 " />
+          <line class="tpl"                     x1="680" y1="440" x2="700" y2="460" />
+          <polyline class="tpl"                 points="687.812,454.883 698.419,458.419 694.883,447.812  " />
         </g>
-        <g
-           id="g3901">
-          <line
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             x1="660"
-             y1="500"
-             x2="660"
-             y2="515.52802"
-             id="line3903" />
-          <polyline
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             points="655,507.764 660,517.764 665,507.764 "
-             id="polyline3905" />
+        <g>
+          <line class="staticContent"           x1="640" y1="500" x2="640" y2="515.52802" />
+          <polyline class="staticContent"       points="635,507.764 640,517.764 645,507.764 " />
         </g>
-        <g
-           id="g3907">
-          <line
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             x1="680"
-             y1="500"
-             x2="680"
-             y2="515.52802"
-             id="line3909" />
-          <polyline
-             style="fill:none;stroke:#e6e6fa;stroke-width:2"
-             points="675,507.764 680,517.764 685,507.764 "
-             id="polyline3911" />
+        <g>
+          <line class="tpl"                     x1="660" y1="500" x2="660" y2="515.52802" />
+          <polyline class="tpl"                 points="655,507.764 660,517.764 665,507.764 " />
         </g>
-        <g
-           id="g3913">
-          <line
-             style="fill:none;stroke:#a52a2a;stroke-width:2"
-             x1="660"
-             y1="560"
-             x2="660"
-             y2="575.52802"
-             id="line3915" />
-          <polyline
-             style="fill:none;stroke:#a52a2a;stroke-width:2"
-             points="655,567.764 660,577.764 665,567.764 "
-             id="polyline3917" />
+        <g>
+          <line class="staticContent"           x1="680" y1="500" x2="680" y2="515.52802" />
+          <polyline class="staticContent"       points="675,507.764 680,517.764 685,507.764 " />
         </g>
-        <g
-           id="g3919">
-          <line
-             style="fill:none;stroke:#8b6914;stroke-width:2"
-             x1="680"
-             y1="560"
-             x2="680"
-             y2="575.52802"
-             id="line3921" />
-          <polyline
-             style="fill:none;stroke:#8b6914;stroke-width:2"
-             points="675,567.764 680,577.764 685,567.764 "
-             id="polyline3923" />
+        <g>
+          <line class="sysUnits"                x1="660" y1="560" x2="660" y2="575.52802" />
+          <polyline class="sysUnits"            points="655,567.764 660,577.764 665,567.764 " />
         </g>
-        <g
-           id="g3925">
-          <line
-             style="fill:none;stroke:#ffc0cb;stroke-width:2"
-             x1="700"
-             y1="560"
-             x2="700"
-             y2="575.52802"
-             id="line3927" />
-          <polyline
-             style="fill:none;stroke:#ffc0cb;stroke-width:2"
-             points="695,567.764 700,577.764 705,567.764 "
-             id="polyline3929" />
+        <g>
+          <line class="sysValue"                x1="680" y1="560" x2="680" y2="575.52802" />
+          <polyline class="sysValue"            points="675,567.764 680,577.764 685,567.764 " />
         </g>
-        <g
-           id="g3931">
-          <line
-             style="fill:none;stroke:#800080;stroke-width:2"
-             x1="720"
-             y1="560"
-             x2="720"
-             y2="575.52802"
-             id="line3933" />
-          <polyline
-             style="fill:none;stroke:#800080;stroke-width:2"
-             points="715,567.764 720,577.764 725,567.764 "
-             id="polyline3935" />
+        <g>
+          <line class="diaUnits"                x1="700" y1="560" x2="700" y2="575.52802" />
+          <polyline class="diaUnits"            points="695,567.764 700,577.764 705,567.764 " />
         </g>
-        <g
-           id="g3937">
-          <line
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             x1="700"
-             y1="500"
-             x2="700"
-             y2="515.52802"
-             id="line3939" />
-          <polyline
-             style="fill:none;stroke:#7f7f7f;stroke-width:2"
-             points="695,507.764 700,517.764 705,507.764 "
-             id="polyline3941" />
+        <g>
+          <line class="diaValue"                x1="720" y1="560" x2="720" y2="575.52802" />
+          <polyline class="diaValue"            points="715,567.764 720,577.764 725,567.764 " />
+        </g>
+        <g>
+          <line class="tpl"                     x1="700" y1="500" x2="700" y2="515.52802" />
+          <polyline class="tpl"                 points="695,507.764 700,517.764 705,507.764 " />
         </g>
       </g>
       <g
          id="rightPatient">
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="20"
-           x2="640"
-           y2="60"
-           id="line3943" />
-        <line
-           style="fill:none;stroke:#000000;stroke-width:2"
-           x1="640"
-           y1="20"
-           x2="660"
-           y2="60"
-           id="line3945" />
-        <g
-           id="g3947">
-          <line
-             style="fill:none;stroke:#ffa500;stroke-width:2"
-             x1="640"
-             y1="60"
-             x2="640"
-             y2="75.527901"
-             id="line3949" />
-          <polyline
-             style="fill:none;stroke:#ffa500;stroke-width:2"
-             points="635,67.7639 640,77.7639 645,67.7639 "
-             id="polyline3951" />
+        <line class="arc"                       x1="640" y1="20" x2="640" y2="60" />
+        <line class="arc"                       x1="640" y1="20" x2="660" y2="60" />
+        <g>
+          <line class="personName"              x1="640" y1="60" x2="640" y2="75.527901" />
+          <polyline class="personName"          points="635,67.7639 640,77.7639 645,67.7639 " />
         </g>
-        <g
-           id="g3953">
-          <line
-             style="fill:none;stroke:#008000;stroke-width:2"
-             x1="660"
-             y1="60"
-             x2="660"
-             y2="75.527901"
-             id="line3955" />
-          <polyline
-             style="fill:none;stroke:#008000;stroke-width:2"
-             points="655,67.7639 660,77.7639 665,67.7639 "
-             id="polyline3957" />
+        <g>
+          <line class="personID"                x1="660" y1="60" x2="660" y2="75.527901" />
+          <polyline class="personID"            points="655,67.7639 660,77.7639 665,67.7639 " />
         </g>
       </g>
     </g>
+  </defs>
+</svg>
+<svg version="1.1" id="textmapBox"
+   viewBox="0 18 727 625" style="width: 50%"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <g>
+    <use xlink:href="#leftText"                 x="0" y="0" width="687" height="625" />
+    <use xlink:href="#leftTree"                 x="0" y="0" width="687" height="625" />
+    <use xlink:href="#textmapArrows"            x="0" y="0" width="687" height="625" />
+    <use xlink:href="#rightText"                x="0" y="0" width="687" height="625" />
+    <use xlink:href="#rightTrees"               x="0" y="0" width="687" height="625" />
   </g>
-  <text
-     font-size="12.7998"
-     style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal"
-     x="72"
-     y="119"
-     id="text3559">
-    <tspan
-       x="72"
-       y="119"
-       id="tspan3561" />
-  </text>
-  <text
-     font-size="12.7998"
-     style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal"
-     x="140"
-     y="100"
-     id="text3631">
-    <tspan
-       x="140"
-       y="100"
-       id="tspan3633" />
-  </text>
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="textmap"
-     sodipodi:insensitive="true"
-     style="display:inline">
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#leftText"
-       id="use5685"
-       width="687"
-       height="625" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#leftTree"
-       id="use5689"
-       width="687"
-       height="625" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#arrows"
-       id="use5693"
-       width="687"
-       height="625" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#rightText"
-       id="use5697"
-       width="687"
-       height="625" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#rightTree"
-       id="use5701"
-       width="687"
-       height="625" />
+  <g id="legend"                                transform="translate(-65, 360)">
+    <text style="fill:#000000;"                 x="80" y="60">Legend:</text>
+    <g id="legend_properties"                   transform="matrix(0,-1,1,0,0.24364069,190.27599)">
+      <line class="arc"                         x1="84.890511" y1="65.026848" x2="64.929245" y2="104.94937" />
+      <line class="arc"                         x1="84.890511" y1="65.026848" x2="84.890511" y2="104.94937" />
+      <line class="arc"                         x1="84.890511" y1="65.026848" x2="124.81301" y2="104.94937" />
+    </g>
+    <g id="legend_matchedTriples"               transform="matrix(0,-1,1,0,-79.262542,276.66353)">
+      <g class="tpl"                            transform="matrix(0.99806298,0,0,0.99806298,-181.70062,-44.941907)">
+        <line class="staticContent"             x1="260" y1="210" x2="260" y2="225.528" />
+        <polyline class="staticContent"         points="255,217.764 260,227.764 265,217.764 " />
+      </g>
+      <g class="tpl"                            transform="matrix(0.99806298,0,0,0.99806298,-188.34818,-44.941907)">
+        <line class="personID"                  x1="280" y1="210" x2="280" y2="225.528" />
+        <polyline class="personID"              points="275,217.764 280,227.764 285,217.764 " />
+      </g>
+      <g class="tpl"                            transform="matrix(0.99806298,0,0,0.99806298,-202.75118,-44.941907)">
+        <line                                   x1="320" y1="210" x2="303.16199" y2="226.838" />
+        <polyline                               points="305.117,217.812 301.581,228.419 312.188,224.883 " />
+      </g>
+      <g class="tpl"
+         transform="matrix(0.99806298,0,0,0.99806298,-202.75118,-44.941907)">
+        <line                                   x1="320" y1="210" x2="336.83801" y2="226.838" />
+        <polyline                               points="327.812,224.883 338.419,228.419 334.883,217.812 " />
+      </g>
+    </g>
+    <text style="fill:#000000;"                 x="128.54137" y="138.3644"
+       transform="matrix(0.55396191,0,0,0.55396191,40,16.442852)">properties</text>
+    <text style="fill:#000000;"                 x="128.54137" y="158.3644"
+       transform="matrix(0.55396191,0,0,0.55396191,40,16.442852)">in schema</text>
+    <text style="fill:#000000;"                 x="129.94466" y="270.27365"
+       transform="matrix(0.55396191,0,0,0.55396191,40,16.442852)">matched or</text>
+    <text style="fill:#000000;"                 x="129.94466" y="290.27365"
+       transform="matrix(0.55396191,0,0,0.55396191,40,16.442852)">implied triples</text>
   </g>
 </svg>
       <p>
         This can be viewed as mappig between two trees:
       </p>
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
+      <div class="namespace">
+        <div style="float:left;">
+          <ul>
+            <li class="patient2patient ll">patient record <span class="p1234567">:p1234567</span> ⇨ :Patient-1234567</li>
+            <li class="patient2obs1 ll">patient record :p1234567 ⇨ :Patient-1234567.Obs1</li>
+            <li class="patient2obs2 ll">patient record :p1234567 ⇨ :Patient-1234567.Obs2</li>
+          </ul>
+        </div>
+<svg version="1.1" id="treemapBox"
+   viewBox="47 17 354 262" style="float:left; width:30%;"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="35cm"
-   height="32cm"
-   viewBox="40 68 387 175"
-   id="svg3553"
-   version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="BPmap.svg">
-  <g
-     inkscape:groupmode="layer"
-     id="layer1"
-     inkscape:label="treemap"
-     style="display:inline">
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#leftTree"
-       id="use5705"
-       transform="translate(-66.475428,-332.37718)"
-       width="687"
-       height="625" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#rightPatient"
-       id="use5708"
-       width="687"
-       height="625"
-       transform="translate(-446.11667,-1.2437907)" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#rightObs2"
-       id="use5715"
-       transform="translate(-406.93726,-301.12002)"
-       width="687"
-       height="625" />
-    <use
-       style="display:inline"
-       x="0"
-       y="0"
-       xlink:href="#rightObs1"
-       id="use5711"
-       transform="translate(-325.76608,-71.565469)"
-       width="687"
-       height="625" />
-    <g
-       id="treemap"
-       transform="translate(-256.84278,-294.1565)">
-      <g
-         id="g4835"
-         transform="matrix(0.99806298,0,0,0.99806298,211.76945,222.62011)">
-        <line
-           id="line4837"
-           y2="124.946"
-           x2="346.39899"
-           y1="200"
-           x1="140"
-           style="fill:none;stroke:#7f7f7f;stroke-width:4;stroke-dasharray:5" />
-        <polygon
-           id="polygon4839"
-           points="348.108,129.645 355.797,121.528 344.69,120.247 "
-           style="fill:#ffffff" />
-        <polygon
-           id="polygon4841"
-           points="348.108,129.645 355.797,121.528 344.69,120.247 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
+>
+  <g id="treemap">
+    <use xlink:href="#leftTree" class="p1234567 ll"
+                                                transform="translate(-66.475428,-332.37718)" />
+    <use xlink:href="#rightPatient"             transform="translate(-446.11667,-1.2437907)" />
+    <use xlink:href="#rightObs2"                transform="translate(-406.93726,-301.12002)" />
+    <use xlink:href="#rightObs1"                transform="translate(-325.76608,-71.565469)" />
+    <g id="treemapArrows"                       transform="translate(-256.84278,-294.1565)">
+      <g id="patientArrow" class="patient2patient ll"
+                                                transform="matrix(0.99806298,0,0,0.99806298,211.76945,222.62011)">
+        <line                                   x1="120" y1="140" x2="226.64101" y2="95.5662" />
+        <polygon class="cover"                  points="228.564,100.182 235.872,91.7201 224.718,90.9508 " />
+        <polygon class="arrowhead"              points="228.564,100.182 235.872,91.7201 224.718,90.9508 " />
       </g>
-      <g
-         id="g4843"
-         transform="matrix(0.99806298,0,0,0.99806298,211.76945,222.62011)">
-        <line
-           id="line4845"
-           y2="174.159"
-           x2="266.138"
-           y1="200"
-           x1="180"
-           style="fill:none;stroke:#7f7f7f;stroke-width:4;stroke-dasharray:5" />
-        <polygon
-           id="polygon4847"
-           points="267.575,178.948 275.716,171.285 264.701,169.369 "
-           style="fill:#ffffff" />
-        <polygon
-           id="polygon4849"
-           points="267.575,178.948 275.716,171.285 264.701,169.369 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
+      <g id="obs1Arrow" class="patient2obs1 ll"
+                                                transform="matrix(0.99806298,0,0,0.99806298,211.76945,222.62011)">
+        <line                                   x1="140" y1="200" x2="346.39899" y2="124.946" />
+        <polygon class="cover"                  points="348.108,129.645 355.797,121.528 344.69,120.247 " />
+        <polygon class="arrowhead"              points="348.108,129.645 355.797,121.528 344.69,120.247 "/>
       </g>
-      <g
-         id="g4851"
-         transform="matrix(0.99806298,0,0,0.99806298,211.76945,222.62011)">
-        <line
-           id="line4853"
-           y2="95.5662"
-           x2="226.64101"
-           y1="140"
-           x1="120"
-           style="fill:none;stroke:#7f7f7f;stroke-width:4;stroke-dasharray:5" />
-        <polygon
-           id="polygon4855"
-           points="228.564,100.182 235.872,91.7201 224.718,90.9508 "
-           style="fill:#ffffff" />
-        <polygon
-           id="polygon4857"
-           points="228.564,100.182 235.872,91.7201 224.718,90.9508 "
-           style="fill:none;stroke:#7f7f7f;stroke-width:4" />
+      <g id="obs2Arrow" class="patient2obs2 ll"
+                                                transform="matrix(0.99806298,0,0,0.99806298,211.76945,222.62011)">
+        <line                                   x1="180" y1="200" x2="266.138" y2="174.159" />
+        <polygon class="cover"                  points="267.575,178.948 275.716,171.285 264.701,169.369 " />
+        <polygon class="arrowhead"              points="267.575,178.948 275.716,171.285 264.701,169.369 " />
       </g>
     </g>
   </g>
 </svg>
-
+<div style="clear:both;"/>
+      </div>
+    <script type="text/javascript">
+      <!--
+          prepareHighlight(["p1234567", "patient2patient", "patient2obs1", "patient2obs2"], "hl", "ll");
+      -->
+    </script>
     </div>
 
     <div>
