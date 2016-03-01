@@ -73,13 +73,15 @@
       .tree         { fill:none; stroke-width:2; }
       #legend       { fill:none; stroke-width:2; }
 
-      .ll           { border: medium solid #fff; }
+      .ll           { border: medium solid rgba(255, 255, 255, 0); }
       .behind       { fill:none; stroke-width:6; opacity: .05; }
+      .behind .ll   { stroke-width: 12; }
       .hl.behind    { opacity: .3; }
       line.behind   {  }
-      .hl           { stroke:#007f00; color: #007f00; border: medium solid #777; }
+      .hl           { stroke:#007f00; color: #007f00; border: medium solid rgba(127, 127, 127, 1); }
 
       text { font-family: sans-serif; font-size: .8em; }
+
     </style>
     	<script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
 	    <script class='remove'>
@@ -574,6 +576,7 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
     </div>
     <div>
       <h2 id="Mechanism">Mechanism</h2>
+      <p class="issue">this is very rough, don't work hard to look for cleverness where it's probably just wrong.</p>
       <ol>
         <li>Validate instance document with respect to source schema (say <a href="#BPFHIR">BP FHIR</a>)<br/>
         produces variable bindings</li>
@@ -589,6 +592,17 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
         </li>
         <li>The resulting graph of assertions should validate as the target schema.</li>
       </ol>
+
+    </div>
+    <div>
+      <h2 id="Multiplicity">Multiplicity</h2>
+      <p>
+        Reallistic mapping use cases involve a mixture of unary and n-ary properties.
+        For instance, a patient record may contain a sequence of vitals like blood pressure.
+        Taking again FHIR as the target schema, the mapping from a single source record to multiple target records requires repeated uses of some properties for each instantiation of the repeated properties.
+        The example below shows sample instance data in both textual and tree representations.
+        The trees are essentially the validation result format defined in <a href="../../primer/ShExJ#validation">ShExJ Validation Results</a>.
+      </p>
 
       <svg version="1.1" id="textmapBox"
            viewBox="0 18 727 625" style="width: 50%"
@@ -642,11 +656,24 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
         This can be viewed as mappig between two trees:
       </p>
       <div class="namespace">
-        <div style="float:left;">
+        <div style="float:left; width:30%">
           <ul>
             <li class="patient2patient ll">patient record <span class="p1234567">:p1234567</span> ⇨ <span class="Patient-1234567">:Patient-1234567</span></li>
             <li class="patient2obs1 ll">blood pressure <span class="patientObs1 ll">reading 1</span> ⇨ <span class="Patient-1234567_Obs1">:Patient-1234567.Obs1</span></li>
             <li class="patient2obs2 ll">blood pressure <span class="patientObs2 ll">reading 2</span> ⇨ <span class="Patient-1234567_Obs2">:Patient-1234567.Obs2</span></li>
+          </ul>
+          <p>
+            Materialization of <span class="Patient-1234567">:Patient-1234567</span> entailed mapping the unary properties from <span class="p1234567">:p1234567</span>.
+            This could be accomplished by ignoring n-ary properties like <code>BloodPressureReading</code> or with some form of externally-supplied cut rule passed to the <code>generate</code> function.
+          </p>
+          <p>
+            Materialization of <span class="Patient-1234567_Obs1">:Patient-1234567.Obs1</span> and <span class="Patient-1234567_Obs2">:Patient-1234567.Obs2</span> entailed repeated instantiating of the <span class="personID">PatientID</span> property.
+            Possible rules for this mapping:
+          </p>
+          <ul>
+            <li>Instantiate a shape <code>n</code> time where there are <code>n</code> unique tree providing bindings, i.e. <span class="patientObs1 ll">reading 1</span> and <span class="patientObs2 ll">reading 2</span>.</li>
+            <li>Repeat variables bound exactly once (or <code>n</code> times?) in cousins.</li>
+            <li>If there's a mismatch in cardinalities of require attributes, reject.</li>
           </ul>
         </div>
         <svg version="1.1" id="treemapBox"
@@ -699,22 +726,16 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
     <script type="text/javascript">
       <!--
           // Make copies of referents so we can apply the behind class.
-          $("#treemap use").each(function (ord, elt) {         // use referents
-            elt = $(elt);                              
-            var referent = elt.attr("xlink:href");
-            $(referent).clone().
-              attr("id", referent.substr(1)+"copy").
-              attr("transform", elt.attr("transform")).
-              attr("class", elt.attr("class")).addClass("behind").
-              insertBefore(elt);
-          });
-          $("#treemapArrows line").
-          add("#treemapArrows .arrowhead").each(function (ord, elt) { // arrows
+          $("#treemap use, #treemapArrows").
+          each(function (ord, elt) {
+             // Should apply referent flattening and id removal over whole tree.
             elt = $(elt);
-            $(elt).clone().
-              attr("transform", elt.attr("transform")). // none at present, but...
-              attr("class", elt.attr("class")).addClass("behind").
-              insertBefore(elt);
+            var referent = elt.attr("xlink:href");      // Copy (surface) refs.
+            var cloned = $(referent ? referent : elt).clone();
+            cloned.removeAttr("id").                    // Remove (surface) ids.
+            attr("transform", elt.attr("transform")).   // Apply old's attrs.
+            attr("class", elt.attr("class")).addClass("behind").
+            insertBefore(elt);                          // Paint before old elt.
           });
           prepareHighlight(["p1234567", "patientObs1", "patientObs2", "Patient-1234567", "Patient-1234567_Obs1", "Patient-1234567_Obs2", "patient2patient", "patient2obs1", "patient2obs2"], "hl", "ll");
       -->
