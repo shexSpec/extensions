@@ -59,9 +59,10 @@
       line.diaValue     , polyline.diaValue      { stroke:#800080; } text.diaValue      { fill:#800080; }
                                                                      text.node          { fill:#000000; }
 
-      #treemapArrows { fill:none; stroke-width:4 }
-      #treemapArrows .arrowhead {  }
-      #treemapArrows line { stroke-dasharray:5 }
+      #treemapArrows :not(.behind)     { fill:none; stroke-width:4 }
+      #treemapArrows .behind           { fill:none; stroke-width:10 }
+      #treemapArrows .arrowhead        {  }
+      #treemapArrows line:not(.behind) { stroke-dasharray:5 }
 
       #textmapArrows { fill:none; stroke:#7f7f7f; stroke-width:4 }
       #textmapArrows .arrowhead {  }
@@ -72,9 +73,11 @@
       .tree         { fill:none; stroke-width:2; }
       #legend       { fill:none; stroke-width:2; }
 
+      .ll           { border: medium solid #fff; }
       .behind       { fill:none; stroke-width:6; opacity: .05; }
       .hl.behind    { opacity: .3; }
-      .hl           { stroke:#007f00; color: #007f00; }
+      line.behind   {  }
+      .hl           { stroke:#007f00; color: #007f00; border: medium solid #777; }
 
       text { font-family: sans-serif; font-size: .8em; }
     </style>
@@ -593,15 +596,13 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
            xmlns:xlink="http://www.w3.org/1999/xlink" >
         <g>
           <use xlink:href="#leftText"               x="0" y="0" width="687" height="625" />
-          <!--use xlink:href="#leftTrees"               x="0" y="0" width="687" height="625" / -->
-          <use xlink:href="#leftPatient"            x="0" y="0" width="687" height="625" />
-          <use xlink:href="#leftSplit"              x="0" y="0" width="687" height="625" />
-          <use xlink:href="#leftObs1"               x="0" y="0" width="687" height="625" />
-          <use xlink:href="#leftObs2"               x="0" y="0" width="687" height="625" />
+          <use xlink:href="#leftTrees"              x="0" y="0" width="687" height="625"
+                                                    transform="translate(100, -50)" />
+          <use xlink:href="#textmapArrows"          x="0" y="0" width="687" height="625" />
           <use xlink:href="#rightText"              x="0" y="0" width="687" height="625" />
           <use xlink:href="#rightTrees"             x="0" y="0" width="687" height="625" />
         </g>
-        <g id="legend"                              transform="translate(-65, 360)">
+        <g id="legend"                              transform="translate(0, 410)">
           <text style="fill:#000000;"               x="80" y="60">Legend:</text>
           <g id="legend_properties"                 transform="matrix(0,-1,1,0,0.24364069,190.27599)">
             <line class="arc"                       x1="84.890511" y1="65.026848" x2="64.929245" y2="104.94937" />
@@ -697,15 +698,24 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
       </div>
     <script type="text/javascript">
       <!--
-          $("#treemap use").each(function (ord, elt) {
-            elt = $(elt);
+          // Make copies of referents so we can apply the behind class.
+          $("#treemap use").each(function (ord, elt) {         // use referents
+            elt = $(elt);                              
             var referent = elt.attr("xlink:href");
             $(referent).clone().
               attr("id", referent.substr(1)+"copy").
               attr("transform", elt.attr("transform")).
               attr("class", elt.attr("class")).addClass("behind").
               insertBefore(elt);
-          });debugger;
+          });
+          $("#treemapArrows line").
+          add("#treemapArrows .arrowhead").each(function (ord, elt) { // arrows
+            elt = $(elt);
+            $(elt).clone().
+              attr("transform", elt.attr("transform")). // none at present, but...
+              attr("class", elt.attr("class")).addClass("behind").
+              insertBefore(elt);
+          });
           prepareHighlight(["p1234567", "patientObs1", "patientObs2", "Patient-1234567", "Patient-1234567_Obs1", "Patient-1234567_Obs2", "patient2patient", "patient2obs1", "patient2obs2"], "hl", "ll");
       -->
     </script>
