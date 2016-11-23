@@ -456,11 +456,11 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
     </p>
 
     <div>
-      <h2 id="DomainModels">Domain Analysis Models</h2>
+      <h2 id="DomainModels">Domain Models</h2>
       <div>
         <h3 id="whyDAMs">Why do we need domain analysis models?</h3>
         <p>
-          Domain Analysis Models (DAMs) will likely be more principled in their design and will definitely be more intuitive the physical models involving constellations of observations.
+          Domain Analysis Models (DAMs) will likely be more principled in their design and will definitely be more intuitive than the physical models involving constellations of observations.
           A class and relationship hierarchy such as that implemented in ActRelationship type codes will be more simply expressed in an RDF ontology and will leverage existing RDF tooling for model and example verification.          
         </p>
       </div>
@@ -468,7 +468,7 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
       <div>
         <h3 id="availableDAMs">Available DAMs</h3>
         <p>
-          Projects like CIMI engage clinicians in the development of intuitive DAMs, e.g. a blood pressure and a structure with a measurement of a systolic and distolic pressure, and maybe some other stuff like posture or device.
+          Projects like CIMI engage clinicians in the development of intuitive domain models, e.g. a blood pressure and a structure with a measurement of a systolic and distolic pressure, and maybe some other stuff like posture or device.
           Here are a few CIMI models:
         </p>
 
@@ -482,7 +482,7 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
       <div>
         <h3 id="DAMasOntology">DAM as Ontology</h3>
         <p>
-          Ideally, development of little DAMs would include identifying all of the intersections between them, creating a more comprehensive  model, and ontology of clinical artifacts.
+          Ideally, development of little DAMs would include identifying all of the intersections between them, creating a more comprehensive DAM, and ontology of clinical artifacts.
           The body mass used in an estimated glomerular filtration rate is the same as the body mass used in a body mass index.
           A useful clinical ontology in RDF would capture that by reusing the same identifiers wherever the same concept was reused.
         </p>
@@ -498,7 +498,7 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
         </p>
         <ul>
           <li>Definitions for physical representations — presuming the DAM has intuitive and useful semantics mapping a physical model to a logical model provides clear guidelines for implementors who need to work with the corresponding physical models. These take the place of implementation guidelines or instance diagrams.</li>
-          <li>Duplication detection — if two DAMs map to the same physical model, either the models are incomplete or they duplicate each other. This will be tempered by the fact that any models that share components will necessarily map to the same physical model.</li>
+          <li>Duplication detection — if two domain models map to the same physical model, either the models are incomplete or they duplicate each other. This will be tempered by the fact that any models that share components will necessarily map to the same physical model.</li>
           <li>Data/query transformation — mapping between a physical model and a logical model provides users of the logical model, for instance, someone writing clinical decisions support rules, access to working clinical data. Mappings between a logical model and two or more physical models enables mappings between those physical models.</li>
         </ul>
       </div>
