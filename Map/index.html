@@ -123,7 +123,7 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
 }
       --> 
     </script>
-    <svg version="1.1"
+    <svg style="height: 0;" version="1.1"
          xmlns:dc="http://purl.org/dc/elements/1.1/"
          xmlns:cc="http://creativecommons.org/ns#"
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -427,10 +427,13 @@ function prepareHighlight (highlightables, onClass, offClass, slide) {
     </svg>
   </head>
 
-  <body>
+  <body style="padding: 0 1em;">
+    <h1 class="logo" style="background-color: white; height: 5ex; margin: 0;">
+	    <img src="//shex.io/logo/2.1/ShEx-Logo.svg" style="float:left;height: 100%; padding: .2em;" alt="ShEx Icon" /><img style="float:left;height: 100%; padding: .2em;" src="//www.w3.org/RDF/icons/rdf_w3c.svg" alt="W3C SW" /><span style="/* vertical-align: bottom; */font-size: 2em;padding: .2em;">ShExMap</span>
+    </h1>
     <div id="abstract">
       <p>
-        This document motivates intuitive bridges between conventional clinical data representations and domain-specific ontologies that will be useful for knowledge/rule capture.
+        This document describes useing ShEx for intuitive bridges between conventional clinical data representations and domain-specific ontologies that will be useful for knowledge/rule capture.
       </p>
     </div>
 
