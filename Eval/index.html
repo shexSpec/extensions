@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="emacs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Test</title>
+    <link rel="stylesheet" href="../extensions.css" type="text/css" />
+
+    	<script src='../../primer/respec-w3c-common.js' async class='remove'></script>
+	    <script class='remove'>
+	      var respecConfig = {
+	          specStatus: "unofficial",
+	          shortName:  "test",
+            edDraftURI: "http://shexspec.github.io/extensions/Map/",
+	          editors: [
+	                {   name:       "Eric Prud'hommeaux",
+	                    url:        "http://www.w3.org/People/Eric/",
+	                    company:    "W3C/MIT",
+	                    companyURL: "http://www.w3.org/" }
+	          ],
+	          wg:           "HCLS",
+	          wgURI:        "https://www.w3.org/wiki/HCLSIG",
+	          wgPublicList: "public-semweb-lifesci",
+	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
+	      };
+	    </script>
+  </head>
+
+  <body>
+    <div id="abstract">
+      <p>
+        The ShEx <code>Test</code> extension is a very simple extension intended for testing ShEx extension frameworks.
+        <code>Test</code> participates in validate and has side-effects.
+      </p>
+    </div>
+
+    <section>
+      <h2 id="example">Example</h2>
+      <p>
+        The <code>Test</code> extension has two functions:
+      </p>
+      <ul>
+        <li><code>print(msg)</code> - emit some mesage</li>
+        <li><code>fail(msg)</code> - fail validation</li>
+      </ul>
+      <p>
+        Example input schema with ShEx Test directives and input data:
+      </p>
+
+      <div id="simple-expressions-example-1" class="example wrapper">
+<pre class="schema shexc textInput" style="display: block; float:left; "><span class="keyword">PREFIX</span> <span class="prefix">schema: </span><span class="IRI">&lt;http://schema.org/&gt;</span>
+<span class="keyword">PREFIX</span> <span class="prefix">eval: </span><span class="IRI">&lt;http://shex.io/extensions/Eval/&gt;</span>
+<span class="keyword">BASE</span> &lt;http://schema.org/shex&gt;
+
+<span class="shapeName"><span class="shapeName"><span id="r0_s"><span class="IRI">&lt;#Recipe&gt;</span></span></span></span> <span class="keyword">EXTRA</span> a <span class="shape">{
+    <span id="r0" class="rule"><span id="r_predicate"><span class="keyword">a</span></span> [<span id="r_value_0"><span class="prefix">schema:</span><span class="localName">Recipe</span></span>]</span>;
+    <span id="r1" class="rule"><span id="r_predicate"><span class="prefix">schema:</span><span class="localName">datePublished</span></span> .  </span>
+        <span class="code">%eval:{
+          const val = ShEx.RdfTerm.getLiteralValue(ctx.object);
+          isNaN(Date.parse(val))
+            ? [{type: "SemActViolation", message: `"${val} is not a date`}]
+            : []
+        %}</span>
+}
+
+</span></pre>
+          <div class="verticalDivider"><!-- acts as a divider --></div>
+<pre class="textInput" style="display: block; "><span class="keyword">PREFIX</span> <span class="prefix">schema: </span><span class="IRI">&lt;http://schema.org/&gt;</span>
+
+<span id="t0_s"><span class="IRI">&lt;http://example.org/recipe&gt;</span></span>
+  <span id="t0_p"><span class="keyword">a</span></span> <span id="t0_o"><span class="prefix">schema:</span><span class="localName">Recipe</span></span> ;
+  <span id="t1_p"><span class="prefix">schema:</span><span class="localName">datePublished</span></span> <span id="t1_o" class="literal">"2020-01-01xx"</span>.</pre>
+        <div style="clear:both"></div>
+      </div>
+
+    </section>
+
+    <section>
+      <h2 id="def">Definition</h2>
+      <p>
+        <code>Eval</code>'s semantics are entirely dependent on the host language and API.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="parsing">Parsing</h2>
+      <p>
+        <code>Eval</code> is evaluated by the host lanugage's eval function or its equivalent.
+      </p>
+    </section>
+
+    <section>
+      <table class="implementations" prefix="dc: http://purl.org/dc/terms/ shex: http://www.w3.org/ns/shex# xsd: http://www.w3.org/2001/XMLSchema# code: http://example.org/ns#">
+        <thead>
+          <tr><th>langauge</th><th>platform/API</th><th>package</th><th>source</th></tr>
+        </thead>
+        <tbody>
+          <tr property="code:softwareLanguage" resource="code:javascript">
+            <td property="code:softwareLanguageString">javascript</td>
+            <td property="code:softwareAgent" resource="https://github.com/shexSpec/shex.js">shexjs</td>
+            <td><a property="shex:package" href="https://raw.githubusercontent.com/shexSpec/shex.js/master/extensions/shex-js/browser/shex-extension-js-browserify.min.js">packaged</a></td>
+            <td><a property="shex:source" href="https://raw.githubusercontent.com/shexSpec/shex.js/master/extensions/shex-js/shex-extension-js.js">src</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>While Eval is easy to implement in interpreted languages, it MUST only be used with trusted schemas.</li>
+      </ul>
+    </section>
+
+    <address>
+      edited by: <a href="http://www.w3.org/People/Eric/">Eric Prud'hommeaux</a>
+    </address>
+  </body>
+</html>
