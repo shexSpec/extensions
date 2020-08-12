@@ -1,0 +1,103 @@
+      code { background-color: #dfd; }
+      .constant {
+        /* font-lock-constant-face */
+        color: #008b8b;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #a020f0;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #483d8b;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #8b2252;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #a0522d;
+      }
+
+      a {
+        /* color: inherit;
+           background-color: inherit;
+        */
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      pre { display: inline-block; }
+
+      .example {
+        display: inline-block;
+      }
+      .example.wrapper {
+        background-color: #fff;
+      }
+      .example.wrapper pre {
+        background-color: #fcfaee;
+        margin-left: 0;
+        line-height: 1.2;
+        display: table;
+      }
+      .example.wrapper .fail {
+        background-color: #fceefa
+      }
+
+      pre.schema.shexc { background-color: #ECEBF7; border: thick solid #e4e3ec; }
+      pre.schema.json { background-color: #ECEBF7; border: thick solid #DCDBE7; }
+      .example.wrapper pre.output { background-color: #ECF7EB; border: thick solid #e4ece3; }
+      pre.instance { border: thick solid #f8f6ea; }
+      .verticalDivider {
+        float: left;
+        width: .5em;
+        border:thin solid #fff; /* disappears without this */
+      }
+
+.success { color: #0d0; }
+.schemaflow {
+    border-top: 1px solid #8fc;
+    border-bottom: 1px solid #8fc;
+    border-left: .25em solid #8fc;
+    border-right: .25em solid #8fc;
+}
+.dataflow {
+    border-top: 1px solid #7bf;
+    border-bottom: 1px solid #7bf;
+    border-left: .25em solid #7bf;
+    border-right: .25em solid #7bf;
+}
+.error {
+    color: #d00;
+}
+.prefix {
+    color: #228b22;
+}
+.localName {
+    color: #008b8b;
+}
+.IRI {
+    color: #00f;
+}
+.code {
+    color: #7bb;
+}
+.shapeName {
+    color: #a0522d;
+}
+.fakelink {
+    color: #3d586c;
+    background-color: buttonface;
+}
+.implementations { border-collapse:collapse;border-spacing:0; }
+.implementations td { border-color:black;border-style:solid;border-width:1px; padding:.5ex .5em; }
+.implementations th { border-color:black;border-style:solid;border-width:1px; padding:.5ex .5em; }
+
