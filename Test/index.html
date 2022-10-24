@@ -129,7 +129,7 @@ Matches:
     <section>
       <h2 id="parsing">Parsing</h2>
       <p>
-        <code>Test</code> directives can be parsed with the regular expression <code>/^ *(fail|print) *\( *(?:(\"(?:[^\\"]|\\")*\")|([spo])) *\) *$/</code>.
+        <code>Test</code> directives can be parsed with the regular expression <code>/^ *(fail|print) *\( *(?:("(?:[^\\"]|\\\\|\\")*")|([spo])) *\) *$/</code>.
         The first capture group will be either "fail" or "print".
         The second will capture quoted strings, including their quotation marks.
         The third will captures the particles "s", "p", "o".
