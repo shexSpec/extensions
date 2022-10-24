@@ -116,13 +116,13 @@ Matches:
         <li><code>fail(msg)</code> - fail validation</li>
       </ul>
       <p>
-        Each takes an argument, which is one of these four particles:
+        Each takes an argument, which is one of these four particles: <code>s</code>, <code>p</code> or <code>o</code>, or a literal delimited with <code>"</code>s and potentially containing <code>"</code>s and <code>\</code>s escaped by preceding <code>\</code>s.
       </p>
       <ul>
-        <li><code>s</code> - the subject of the triple being evaluated.</li>
-        <li><code>p</code> - the predicate of the triple being evaluated.</li>
-        <li><code>o</code> - the object of the triple being evaluated.</li>
-        <li><code>\" ([^"]|\\")* \"</code> - a quoted string with escaped double quotes.</li>
+        <li>For all SemActs, string literals are stripped of their delimiters, unescaped, and treated as a literal.</li>
+        <li>For SemActs on TripleExpressions, <code>s</code>, <code>p</code> and <code>o</code> correspond to the subject, predicate and object of the matching triple.</li>
+        <li>For SemActs on ShapeExpressions, <code>s</code> corresponds to focus node; the rest not defined.</li>
+        <li>For Start SemActs, no variable references are defined.</li>
       </ul>
     </section>
 
@@ -134,11 +134,6 @@ Matches:
         The second will capture quoted strings, including their quotation marks.
         The third will captures the particles "s", "p", "o".
       </p>
-      <ul>
-        <li>For SemActs on TripleExpressions, these correspond to parts of the matching triple.</li>
-        <li>For SemActs on ShapeExpressions, <code>s</code> corresponds to focus node; the rest not defined.</li>
-        <li>For Start SemActs, no variable references are defined.</li>
-      </ul>
       </p>
         For any valid <code>Test</code> string, the first capture group and either the second or the third will be matched.
       </p>
