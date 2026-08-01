@@ -119,7 +119,7 @@ Matches:
         Each takes an argument, which is one of these four particles: <code>s</code>, <code>p</code> or <code>o</code>, or a literal delimited with <code>"</code>s and potentially containing <code>"</code>s and <code>\</code>s escaped by preceding <code>\</code>s.
       </p>
       <ul>
-        <li>For all SemActs, string literals are stripped of their delimiters, unescaped, and treated as a literal.</li>
+        <li>For all SemActs, string literals are stripped of their delimiters and unescaped: each of the two escape sequences <code>\\</code> and <code>\"</code> is replaced by its second character (<code>\</code> and <code>"</code> respectively).  A backslash appears in the emitted message only where the literal spelled it <code>\\</code>; for example, <code>print("%{\\%}")</code> emits the five characters <code>%{\%}</code>.</li>
         <li>For SemActs on TripleExpressions, <code>s</code>, <code>p</code> and <code>o</code> correspond to the subject, predicate and object of the matching triple.</li>
         <li>For SemActs on ShapeExpressions, <code>s</code> corresponds to focus node; the rest not defined.</li>
         <li>For Start SemActs, no variable references are defined.</li>
@@ -134,8 +134,11 @@ Matches:
         The second will capture quoted strings, including their quotation marks.
         The third will captures the particles "s", "p", "o".
       </p>
-      </p>
+      <p>
         For any valid <code>Test</code> string, the first capture group and either the second or the third will be matched.
+      </p>
+      <p>
+        To recover the message from the second capture group, strip the delimiting quotation marks and decode the two escape sequences in a single pass, e.g. <code>captured.substring(1, captured.length-1).replace(/\\([\\"])/g, "$1")</code>.
       </p>
     </section>
 
@@ -148,8 +151,8 @@ Matches:
           <tr property="code:softwareLanguage" resource="code:javascript">
             <td property="code:softwareLanguageString">javascript</td>
             <td property="code:softwareAgent" resource="https://github.com/shexSpec/shex.js">shexjs</td>
-            <td><a property="shex:package" href="https://raw.githubusercontent.com/shexSpec/shex.js/master/extensions/shex-test/browser/shex-extension-test-browserify.min.js">packaged</a></td>
-            <td><a property="shex:source" href="https://raw.githubusercontent.com/shexSpec/shex.js/master/extensions/shex-test/shex-extension-test.js">src</a></td>
+            <td><a property="shex:package" href="https://www.npmjs.com/package/@shexjs/extension-test">packaged</a></td>
+            <td><a property="shex:source" href="https://github.com/shexSpec/shex.js/tree/main/packages/extension-test">src</a></td>
           </tr>
         </tbody>
       </table>
