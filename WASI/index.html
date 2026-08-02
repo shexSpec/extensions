@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="emacs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>WASI</title>
+    <link rel="stylesheet" href="../extensions.css" type="text/css" />
+
+    	<script src='../../primer/respec-w3c-common.js' async class='remove'></script>
+	    <script class='remove'>
+	      var respecConfig = {
+	          specStatus: "unofficial",
+	          shortName:  "wasi",
+            edDraftURI: "http://shexspec.github.io/extensions/WASI/",
+	          editors: [
+	                {   name:       "Eric Prud'hommeaux",
+	                    url:        "http://www.w3.org/People/Eric/",
+	                    company:    "W3C/MIT",
+	                    companyURL: "http://www.w3.org/" }
+	          ],
+	          wg:           "HCLS",
+	          wgURI:        "https://www.w3.org/wiki/HCLSIG",
+	          wgPublicList: "public-semweb-lifesci",
+	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
+	      };
+	    </script>
+  </head>
+
+  <body>
+    <div id="abstract">
+      <p>
+        The ShEx <code>WASI</code> extension is a generic semantic-action
+        extension: the action's code is a <em>program</em> — the
+        <a href="https://webassembly.github.io/spec/core/text/index.html">WebAssembly Text (WAT)</a>
+        source of a <a href="https://wasi.dev/">WASI</a> command module — run
+        once per invocation with the evaluation context passed as WASI
+        <code>argv</code>.  Whatever the module prints to WASI fd 1 is
+        collected as the extension's results; the module's exit status is the
+        verdict.  Because the module imports only
+        <code>wasi_snapshot_preview1</code>, the same semantic actions run
+        under any conforming WASI host, in any ShEx implementation, in any
+        language.
+      </p>
+    </div>
+
+    <section>
+      <h2 id="example">Example</h2>
+      <p>
+        A schema may carry <code>Test</code> and <code>WASI</code> actions
+        side by side (implementations fire the actions of extensions they
+        register and skip the rest), so the two suites can share test
+        schemas:
+      </p>
+
+      <div id="dual-example" class="example wrapper">
+        <pre class="schema shexc textInput" style="display: block; float:left; ">
+<span class="shapeName">&lt;http://a.example/S1&gt;</span> {
+   <span class="IRI">&lt;http://a.example/p1&gt;</span> .
+     <span class="code">%&lt;http://shex.io/extensions/Test/&gt;{ print(s) %}</span>
+     <span class="code">%&lt;http://shex.io/extensions/WASI/&gt;{ (func $main (call $println_s)) %}</span>
+     <span class="code">%&lt;http://shex.io/extensions/Test/&gt;{ print(p) %}</span>
+     <span class="code">%&lt;http://shex.io/extensions/WASI/&gt;{ (func $main (call $println_p)) %}</span>
+     <span class="code">%&lt;http://shex.io/extensions/Test/&gt;{ print(o) %}</span>
+     <span class="code">%&lt;http://shex.io/extensions/WASI/&gt;{ (func $main (call $println_o)) %}</span>
+}</pre>
+          <div class="verticalDivider"><!-- acts as a divider --></div>
+        <pre style="float:left;">&lt;http://a.example/s1&gt; &lt;http://a.example/p1&gt; &lt;http://a.example/o1&gt; .
+</pre>
+        <div style="clear:both"></div>
+      </div>
+      <p>
+        Validating <code>&lt;http://a.example/s1&gt;</code> against
+        <code>&lt;http://a.example/S1&gt;</code> with the <code>WASI</code>
+        extension registered collects:
+      </p>
+      <pre>{
+  "prints": [
+    "http://a.example/s1",
+    "http://a.example/p1",
+    "http://a.example/o1"
+  ]
+}</pre>
+    </section>
+
+    <section>
+      <h2 id="invocation">Invocation contract</h2>
+
+      <section>
+        <h3 id="argv">Input: WASI argv</h3>
+        <p>
+          The evaluation context arrives as command arguments:
+        </p>
+        <pre>argv[0] = "http://shex.io/extensions/WASI/"
+argv[1…] = one "&lt;letter&gt;=&lt;value&gt;" per in-scope binding:
+    s=, p=, o=   the matched triple's terms (TripleConstraint actions)
+    n=           the focus node (Shape and NodeConstraint actions)</pre>
+        <p>
+          Start actions run with no bindings.  Term values are serialized as
+          in the <a href="../Test/">Test</a> extension: the term's lexical
+          value, except literals with a non-<code>xsd:string</code> datatype,
+          which appear in Turtle form
+          (<code>"1"^^http://www.w3.org/2001/XMLSchema#integer</code>).
+        </p>
+      </section>
+
+      <section>
+        <h3 id="stdout">Output: WASI stdout</h3>
+        <p>
+          Whatever the module writes to fd 1 is collected; each
+          newline-terminated line (plus any unterminated tail at exit) is
+          appended to the extension's results
+          (in shex.js,
+          <code>validator.semActHandler.results["http://shex.io/extensions/WASI/"]</code>).
+        </p>
+      </section>
+
+      <section>
+        <h3 id="exit">Verdict: the exit status</h3>
+        <table class="simple">
+          <tbody>
+            <tr><td><code>0</code></td><td>success</td></tr>
+            <tr><td><code>1</code></td><td>failure — validation treats the action as failed; lines printed before exiting are still recorded (like Test's <code>fail()</code>)</td></tr>
+            <tr><td><code>2</code> and up</td><td>invocation error — the implementation throws (e.g. the library's binding accessors exit 2 when the binding is absent)</td></tr>
+          </tbody>
+        </table>
+        <p>
+          A trap or a WAT compilation error is also an invocation error.
+        </p>
+      </section>
+
+      <section>
+        <h3 id="escaping">Escaping</h3>
+        <p>
+          ShExC code blocks reserve <code>%</code> and <code>\</code>, so WAT
+          embedded in a schema writes them <code>\%</code> and
+          <code>\\</code> (a WAT string's <code>\0a</code> newline escape
+          becomes <code>\\0a</code>).  The parser unescapes before the
+          extension sees the text.
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2 id="library">Code forms and the library prelude</h2>
+      <p>
+        The code takes one of two forms:
+      </p>
+      <ul>
+        <li>
+          <strong>standalone</strong> — code beginning with
+          <code>(module</code> is compiled as-is: a self-contained WASI
+          command importing only <code>wasi_snapshot_preview1</code>;
+        </li>
+        <li>
+          <strong>library</strong> (the compact, common form) — anything else
+          is a list of module <em>fields</em>, completed by the library
+          prelude
+          (<a href="https://github.com/shexjs/shex.js/blob/WASI-extension/packages/extension-wasi/lib/prelude.wat"><code>prelude.wat</code></a>):
+          the prelude supplies the WASI imports, exported memory, argv
+          loading and print helpers, and an exported <code>_start</code> that
+          calls the author's <code>(func $main …)</code>.
+        </li>
+      </ul>
+      <p>
+        The prelude text is part of this extension's definition: any host
+        performing the same composition runs the same actions.  Its helpers:
+      </p>
+      <table class="simple">
+        <tbody>
+          <tr><td><code>$put (ptr len)</code></td><td>write bytes to fd 1</td></tr>
+          <tr><td><code>$nl ()</code></td><td>write <code>"\n"</code></td></tr>
+          <tr><td><code>$println (ptr len)</code></td><td><code>$put</code> then <code>$nl</code></td></tr>
+          <tr><td><code>$put_s $put_p $put_o $put_n</code></td><td>write a binding's value (exit 2 if absent)</td></tr>
+          <tr><td><code>$println_s $println_p $println_o $println_n</code></td><td>ditto, newline-terminated</td></tr>
+          <tr><td><code>$fail ()</code></td><td>exit 1 — a failed action</td></tr>
+          <tr><td><code>$strlen (ptr) → len</code></td><td>NUL-terminated string length</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Author data segments start at offset <code>8192</code>; below that is
+        the prelude's argv and scratch space.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="gating">Open issue: gating actions need a richer library</h2>
+      <p>
+        The prelude as defined makes <code>WASI</code> a competent
+        <em>reporting</em> extension — everything the
+        <a href="../Test/">Test</a> extension's <code>print</code>/<code>fail</code>
+        grammar expresses is a few library calls.  To be useful as a
+        <em>gating</em> semantic action — one that passes or fails validation
+        based on the <em>content</em> of the bound terms — authors need more
+        than print helpers: comparing binding values against literals,
+        datatype-aware numeric comparison, substring/regex tests, perhaps
+        date arithmetic.  Writing these from scratch in WAT for every action
+        is not realistic; the extension should adopt some standard set of
+        libraries (further prelude functions, or a convention for importing
+        shared modules) to make gating actions practical.
+        <strong>Community input on the shape and scope of that library set is
+        very much appreciated</strong> — as are opinions on accepting binary
+        (<code>.wasm</code>) actions alongside WAT, and on tracking WASI
+        preview 2 / the component model.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="implementations">Implementations</h2>
+      <ul>
+        <li>
+          <a href="https://github.com/shexjs/shex.js/tree/WASI-extension/packages/extension-wasi">@shexjs/extension-wasi</a>
+          — the reference implementation (WAT compiled at runtime via
+          <a href="https://github.com/WebAssembly/wabt">wabt</a>; hosts the
+          module under a minimal built-in WASI shim or Node's
+          <code>node:wasi</code>).  Its test suite re-codes every
+          <a href="https://github.com/shexSpec/shexTest">shexTest</a>
+          validation test bearing the <code>SemanticAction</code> trait with
+          parallel <code>WASI</code> actions and verifies both extensions
+          produce identical results.
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>
