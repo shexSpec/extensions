@@ -116,12 +116,12 @@ Matches:
         <li><code>fail(msg)</code> - fail validation</li>
       </ul>
       <p>
-        Each takes an argument, which is one of these four particles: <code>s</code>, <code>p</code> or <code>o</code>, or a literal delimited with <code>"</code>s and potentially containing <code>"</code>s and <code>\</code>s escaped by preceding <code>\</code>s.
+        Each takes an argument, which is one of these particles: <code>s</code>, <code>p</code>, <code>o</code> or <code>n</code>, or a literal delimited with <code>"</code>s and potentially containing <code>"</code>s and <code>\</code>s escaped by preceding <code>\</code>s.
       </p>
       <ul>
         <li>For all SemActs, string literals are stripped of their delimiters and unescaped: each of the two escape sequences <code>\\</code> and <code>\"</code> is replaced by its second character (<code>\</code> and <code>"</code> respectively).  A backslash appears in the emitted message only where the literal spelled it <code>\\</code>; for example, <code>print("%{\\%}")</code> emits the five characters <code>%{\%}</code>.</li>
         <li>For SemActs on TripleExpressions, <code>s</code>, <code>p</code> and <code>o</code> correspond to the subject, predicate and object of the matching triple.</li>
-        <li>For SemActs on ShapeExpressions, <code>s</code> corresponds to focus node; the rest not defined.</li>
+        <li>For SemActs on ShapeExpressions, <code>s</code> and <code>n</code> correspond to the focus node; the rest not defined.  Unlike <code>s</code>, <code>n</code> is also defined on a bare NodeConstraint, and names that node however the shape was reached: <code>n</code> is the object of a forward triple constraint (<code>&lt;p&gt; @&lt;shape&gt;</code>) or the subject of an inverse one (<code>^&lt;p&gt; @&lt;shape&gt;</code>), i.e. the matched value node regardless of the constraint's direction.</li>
         <li>For Start SemActs, no variable references are defined.</li>
       </ul>
     </section>
@@ -129,10 +129,10 @@ Matches:
     <section>
       <h2 id="parsing">Parsing</h2>
       <p>
-        <code>Test</code> directives can be parsed with the regular expression <code>/^ *(fail|print) *\( *(?:("(?:[^\\"]|\\\\|\\")*")|([spo])) *\) *$/</code>.
+        <code>Test</code> directives can be parsed with the regular expression <code>/^ *(fail|print) *\( *(?:("(?:[^\\"]|\\\\|\\")*")|([spon])) *\) *$/</code>.
         The first capture group will be either "fail" or "print".
         The second will capture quoted strings, including their quotation marks.
-        The third will captures the particles "s", "p", "o".
+        The third will capture the particles "s", "p", "o", "n".
       </p>
       <p>
         For any valid <code>Test</code> string, the first capture group and either the second or the third will be matched.
