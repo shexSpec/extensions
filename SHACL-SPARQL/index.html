@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="emacs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>SHACL-SPARQL</title>
+    <link rel="stylesheet" href="../extensions.css" type="text/css" />
+
+    	<script src='../../primer/respec-w3c-common.js' async class='remove'></script>
+	    <script class='remove'>
+	      var respecConfig = {
+	          specStatus: "unofficial",
+	          shortName:  "shacl-sparql",
+            edDraftURI: "http://shexspec.github.io/extensions/SHACL-SPARQL/",
+	          editors: [
+	                {   name:       "Eric Prud'hommeaux",
+	                    url:        "http://www.w3.org/People/Eric/",
+	                    company:    "W3C/MIT",
+	                    companyURL: "http://www.w3.org/" }
+	          ],
+	          wg:           "HCLS",
+	          wgURI:        "https://www.w3.org/wiki/HCLSIG",
+	          wgPublicList: "public-semweb-lifesci",
+	          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/38539/status",
+	      };
+	    </script>
+  </head>
+
+  <body>
+    <div id="abstract">
+      <p>
+        The ShEx <code>SHACL-SPARQL</code> extension,
+        <code>http://shex.io/extensions/SHACL-SPARQL/</code>, runs
+        <a href="https://www.w3.org/TR/shacl/#sparql-constraints">SHACL-SPARQL</a>
+        queries as semantic actions.  A query means what it means in
+        SHACL-SPARQL — a <code>SELECT</code> reports one violation per
+        solution, an <code>ASK</code> passes when it answers true, and
+        <code>$this</code> and <code>$value</code> are pre-bound — so a query
+        written for a <code>sh:SPARQLConstraint</code> or a
+        <code>sh:SPARQLAskValidator</code> can be used as it is.  What
+        surrounds it is ShEx: recursive shapes, <code>CLOSED</code> over
+        triple expressions, and actions that take part in deciding which
+        triple matches which constraint rather than being reported after
+        the fact.
+      </p>
+    </div>
+
+    <section>
+      <h2 id="example">Example</h2>
+      <p>
+        Events and the parts they're made of must each end no earlier than
+        they start:
+      </p>
+
+      <div id="events-example" class="example wrapper">
+        <pre class="schema shexc textInput" style="display: block; float:left; ">PREFIX : &lt;http://a.example/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX shacl-sparql: &lt;http://shex.io/extensions/SHACL-SPARQL/&gt;
+
+<span class="shapeName">:Event</span> {
+  <span class="IRI">:start</span> xsd:date ;
+  <span class="IRI">:end</span> xsd:date ;
+  <span class="IRI">:part</span> @:Event *
+} <span class="code">%shacl-sparql:{
+  SELECT $this ?start ?end
+         ("the event ends before it starts" AS ?message)
+  WHERE { $this :start ?start ; :end ?end .
+          FILTER (?end &lt; ?start) }
+%}</span></pre>
+          <div class="verticalDivider"><!-- acts as a divider --></div>
+        <pre style="float:left;">PREFIX : &lt;http://a.example/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+:conf :start "2026-10-05"^^xsd:date ;
+      :end   "2026-10-07"^^xsd:date ;
+      :part  :keynote .
+:keynote :start "2026-10-05"^^xsd:date ;
+         :end   "2026-10-04"^^xsd:date .
+</pre>
+        <div style="clear:both"></div>
+      </div>
+      <p>
+        <code>:conf</code> doesn't conform to <code>:Event</code>.  Its own
+        dates pass, but <code>:keynote</code>, reached through the recursive
+        <code>:part @:Event</code>, fails the action with the message
+        <code>"the event ends before it starts"</code>, and so the
+        <code>:part</code> triple has no constraint to satisfy.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="evaluation">Evaluation</h2>
+      <p>
+        ShEx leaves the evaluation of a semantic action to its extension and
+        defines what a failure means
+        (<a href="http://shex.io/shex-semantics/#semantic-actions-semantics"><code>semActsSatisfied</code></a>).
+        For an action named <code>http://shex.io/extensions/SHACL-SPARQL/</code>,
+        the evaluation is:
+      </p>
+      <ol>
+        <li><a href="#parse">Parse</a> the action's code as a SPARQL query.</li>
+        <li><a href="#pre-binding">Pre-bind</a> <code>$this</code> and
+          <code>$value</code>, according to where the action is.</li>
+        <li><a href="#dataset">Evaluate</a> the query over the data being
+          validated.</li>
+        <li><a href="#verdict">Judge</a> the result: success, or failure
+          with one error per violation.</li>
+      </ol>
+
+      <section>
+        <h3 id="parse">Parsing the query</h3>
+        <p>
+          The code is parsed as a
+          <a href="https://www.w3.org/TR/sparql11-query/">SPARQL 1.1</a>
+          <code>Query</code>.  The schema's <code>PREFIX</code> and
+          <code>BASE</code> declarations are in scope, as if they were the
+          query's prologue: a query needs no prefix declarations of its own,
+          which is the job <code>sh:prefixes</code> does in SHACL.  A
+          declaration in the query's own prologue takes precedence.
+        </p>
+        <p>
+          The query has to be a <code>SELECT</code> or an <code>ASK</code>.
+          A query that doesn't parse, a <code>CONSTRUCT</code> or a
+          <code>DESCRIBE</code>, or an action with no code (and no code
+          supplied from outside the schema) is an
+          <em>invocation error</em>: the validation stops with an error
+          rather than reporting a failure.
+        </p>
+        <p>
+          ShExC reserves <code>%</code> and <code>\</code> in code blocks,
+          so a query writes them <code>\%</code> and <code>\\</code>; the
+          parser unescapes them before the extension sees the query.
+        </p>
+      </section>
+
+      <section>
+        <h3 id="pre-binding">Pre-binding <code>$this</code> and <code>$value</code></h3>
+        <p>
+          Which variables are pre-bound depends on the schema element the
+          action is attached to:
+        </p>
+        <table class="simple">
+          <thead>
+            <tr><th>the action is on</th><th><code>$this</code></th><th><code>$value</code></th></tr>
+          </thead>
+          <tbody>
+            <tr><td>a Shape</td><td>the focus node</td><td>—</td></tr>
+            <tr><td>a NodeConstraint</td><td>the node being tested</td><td>—</td></tr>
+            <tr><td>a TripleConstraint</td><td>the focus node: the matched triple's subject, or its object for an inverse (<code>^</code>) constraint</td><td>the other end of the matched triple</td></tr>
+            <tr><td>an EachOf or OneOf</td><td>the node every triple it matched shares</td><td>—</td></tr>
+            <tr><td>the schema's start actions</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <p>
+          In ShExC an action written after a triple constraint's value
+          expression belongs to the triple constraint
+          (<code>:v xsd:integer %shacl-sparql:{…%}</code> binds
+          <code>$this</code> to the subject and <code>$value</code> to the
+          object).  To put an action on the value's own node constraint,
+          label it (<code>:v @:Positive</code> …
+          <code>:Positive xsd:integer %shacl-sparql:{…%}</code>).
+        </p>
+        <p>
+          Pre-binding follows
+          <a href="https://www.w3.org/TR/shacl/#pre-binding">SHACL's definition</a>:
+          each occurrence of a pre-bound variable in the query stands for
+          its term.  In SPARQL <code>$this</code> and <code>?this</code> are
+          the same variable.  A pre-bound variable in a <code>SELECT</code>'s
+          projection is still projected, with its pre-bound value.
+        </p>
+      </section>
+
+      <section>
+        <h3 id="dataset">What the query is evaluated over</h3>
+        <p>
+          The query is evaluated over the data the validation reads, not
+          only the neighborhood of the node being validated.  A query can
+          look anywhere in that data: "no other book has this ISBN" is a
+          question about the other books.
+        </p>
+        <ul>
+          <li>
+            When the data is an RDF dataset, the query's default graph is
+            the union of all of its graphs, and each named graph remains
+            available through <code>GRAPH</code>.
+          </li>
+          <li>
+            When the data is behind a SPARQL endpoint, the query is sent to
+            that endpoint with the pre-bound terms written in, and the
+            endpoint's own dataset applies.  A blank node can't be written
+            into a query, so pre-binding a blank node for an endpoint is an
+            invocation error.
+          </li>
+          <li>
+            When the data is fetched as the validation goes (for instance,
+            one Wikibase entity page at a time), the query sees what has
+            been fetched so far.
+          </li>
+        </ul>
+        <p>
+          The answer depends only on the query, the pre-bound terms and the
+          data, so an implementation may ask each distinct question once per
+          validation.
+        </p>
+      </section>
+
+      <section>
+        <h3 id="verdict">The verdict</h3>
+        <table class="simple">
+          <thead>
+            <tr><th>query</th><th>succeeds when</th><th>otherwise</th><th>as in SHACL</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>SELECT</code></td>
+              <td>there are no solutions</td>
+              <td>fails, with one error per solution</td>
+              <td><a href="https://www.w3.org/TR/shacl/#sparql-constraints-validation"><code>sh:SPARQLConstraint</code></a></td>
+            </tr>
+            <tr>
+              <td><code>ASK</code></td>
+              <td>it answers <code>true</code></td>
+              <td>fails, with one error</td>
+              <td><a href="https://www.w3.org/TR/shacl/#SPARQLAskValidator"><code>sh:SPARQLAskValidator</code></a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A solution's <code>?message</code>, where it binds one, is that
+          error's message; otherwise the message names the extension and
+          lists the solution's bindings.  An implementation should report
+          the solution's bindings with the error, as SHACL reports
+          <code>?value</code> and <code>?path</code> in a validation result.
+        </p>
+        <p>
+          An expression error inside the query (comparing a date with an
+          IRI, say) is SPARQL's business: a <code>FILTER</code> whose
+          expression errs rejects the solution, as SPARQL defines it.  It
+          isn't an invocation error.
+        </p>
+      </section>
+
+      <section>
+        <h3 id="failure">What a failure does</h3>
+        <p>
+          A failure is a semantic-action failure as ShEx defines one, and
+          it means what that means where the action is:
+        </p>
+        <ul>
+          <li>
+            <strong>on a TripleConstraint</strong>, the triple doesn't
+            satisfy that constraint, and the matcher goes on to other ways
+            of distributing the triples.  The query decides which triple
+            goes where:
+            <pre class="schema shexc">:Term {
+  :label . %shacl-sparql:{ ASK { FILTER (lang($value) = "de") } %} ;
+  :label . %shacl-sparql:{ ASK { FILTER (lang($value) = "en") } %}
+}</pre>
+            A node with labels <code>"Hund"@de</code> and
+            <code>"dog"@en</code> conforms: each label goes to the
+            constraint whose query accepts it.  In a <code>CLOSED</code>
+            shape, a triple that no constraint accepts fails the shape.
+          </li>
+          <li>
+            <strong>on an EachOf or OneOf</strong>, that way of matching the
+            group fails.
+          </li>
+          <li>
+            <strong>on a Shape or NodeConstraint</strong>, the node doesn't
+            satisfy it.
+          </li>
+          <li>
+            <strong>in the start actions</strong>, validation fails for
+            every node/shape pair of the shape map: the check is about the
+            data as a whole.
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section>
+      <h2 id="differences">Differences from SHACL-SPARQL</h2>
+      <ul>
+        <li>
+          Only <code>$this</code> and <code>$value</code> are pre-bound.
+          <code>$currentShape</code> and <code>$shapesGraph</code> are not:
+          a ShEx schema isn't an RDF graph a query could ask about.
+        </li>
+        <li>
+          Prefixes come from the schema, not from <code>sh:prefixes</code>.
+        </li>
+        <li>
+          <code>?message</code> is used as it is.  SHACL's
+          <code>{?var}</code> and <code>{$var}</code> message templates are
+          not substituted.
+        </li>
+        <li>
+          There are no targets: which nodes are validated against which
+          shapes is the shape map's job.
+        </li>
+        <li>
+          There are no parameterized constraint components and no
+          <code>$PATH</code> substitution: each action carries its own
+          query.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="implementations">Implementations</h2>
+      <ul>
+        <li>
+          <a href="https://github.com/shexjs/shex.js/tree/feature/extension-shacl-sparql/packages/extension-shacl-sparql">@shexjs/extension-shacl-sparql</a>
+          — queries a local dataset in place with
+          <a href="https://comunica.dev/">Comunica</a>, or sends them to the
+          data source's SPARQL endpoint.  Its answers are asynchronous, so
+          shex.js validates with <code>validateShapeMapAsync</code>.  Its
+          <a href="https://github.com/shexjs/shex.js/tree/feature/extension-shacl-sparql/packages/extension-shacl-sparql/examples/manifest.yaml">examples</a>
+          load in the shex.js web app.
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>
