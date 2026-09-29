@@ -1,0 +1,13 @@
+{
+  "_comment": "Reserved namespace for manifest-entry attributes specific to the SHACL-SPARQL extension, matching the prefix its schemas already use for %shacl-sparql:{ ... %} semantic actions: `PREFIX shacl-sparql: <http://shex.io/extensions/SHACL-SPARQL/>`. No manifest-specific attributes exist yet -- shex.js's example manifest for this extension uses only the core vocabulary (schema, data, queryMap, status, plugins) -- but the prefix is declared here so one has a namespace to land in without colliding with another extension's, the day this extension needs one (a fixture format for its ?message rows, say). Like every extension's, its attributes would be lexically scoped under one `shacl-sparql:parms` mapping, so that term is declared too, with an empty scope for now. Stacked onto shex.js's doc/webapp-manifest-context.jsonld core.",
+
+  "@context": {
+    "@version": 1.1,
+    "shacl-sparql": "http://shex.io/extensions/SHACL-SPARQL/",
+
+    "shacl-sparql:parms": {
+      "@id": "shacl-sparql:parms",
+      "@context": {}
+    }
+  }
+}
