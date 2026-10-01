@@ -1,0 +1,5 @@
+{
+  "_comment": "The SHACL-SPARQL extension's manifest vocabulary: what an examples manifest may write inside the mapping it binds to this file. Bound the way Map/manifest-context.jsonld explains: a term of the manifest's choosing (ssp:parms, say) whose property-scoped @context is this file's URL, declared beside the prefix in the manifest's @context; never imported at the top level. Empty so far: no manifest-specific attribute exists yet -- shex.js's example manifest for this extension uses only the core vocabulary, plus pluginURL inside the mapping to name the plugin -- but the scope is reserved, so the day this extension needs an attribute (a fixture format for its ?message rows, say) it is defined here, bare and mapped to an absolute IRI under http://shex.io/extensions/SHACL-SPARQL/, the namespace its schemas already use for %shacl-sparql:{ ... %} semantic actions. Stacked onto shex.js's doc/webapp-manifest-context.jsonld core.",
+
+  "@context": {}
+}

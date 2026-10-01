@@ -1,0 +1,5 @@
+{
+  "_comment": "The ShExReduce extension's manifest vocabulary: what an examples manifest may write inside the mapping it binds to this file. Bound the way Map/manifest-context.jsonld explains: a term of the manifest's choosing (rdc:parms, say) whose property-scoped @context is this file's URL, declared beside the prefix in the manifest's @context; never imported at the top level. Empty so far: the one thing ShExReduce's examples add to an entry, overlay/overlayURL, is a core attribute of shex.js's manifest vocabulary (its manifest runner applies an overlay for any extension), and pluginURL, written inside the mapping to name the plugin, is core too. Reserved so that an attribute of ShExReduce's own has a place to land: bare, mapped to an absolute IRI under http://shex.io/extensions/Reduce/, the extension's IRI. A vocabulary that wants an attribute another one defined binds the same bare name to the other's IRI in its own scope file: the IRI is the identity, the name is local. Stacked onto shex.js's doc/webapp-manifest-context.jsonld core.",
+
+  "@context": {}
+}
